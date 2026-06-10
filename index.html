@@ -6,150 +6,201 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>FCR Fleet Manager</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-:root { --navy: #0D1B2A; --blue: #1565C0; --gold: #F5A623; --green-bg: #E8F5E9; --green-text: #2E7D32; --red-bg: #FFEBEE; --red-text: #C62828; --gray: #546E7A; --light: #F4F6F8; --border: #E0E6ED; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--light); color: var(--navy); min-height: 100vh; padding-bottom: 90px; }
-.header { background: var(--navy); padding: 16px 20px 0; position: sticky; top: 0; z-index: 100; }
-.header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.header h1 { color: #fff; font-size: 22px; font-weight: 800; } .header h1 span { color: var(--gold); }
-.add-btn { background: var(--gold); color: var(--navy); border: none; border-radius: 50%; width: 44px; height: 44px; font-size: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.stat-tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid rgba(255,255,255,0.1); }
-.stat-tab { padding: 12px 8px 14px; text-align: center; cursor: pointer; border-bottom: 3px solid transparent; }
-.stat-tab.active-all { border-bottom-color: #fff; } .stat-tab.active-available { border-bottom-color: #69F0AE; } .stat-tab.active-down { border-bottom-color: #FF5252; }
-.stat-num { font-size: 24px; font-weight: 800; color: #fff; } .stat-num.available { color: #69F0AE; } .stat-num.down { color: #FF5252; }
-.stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: rgba(255,255,255,0.6); margin-top: 2px; }
-.search-wrap { padding: 12px 16px; background: #fff; border-bottom: 1px solid var(--border); }
-.search-wrap input { width: 100%; padding: 11px 16px; border: 1.5px solid var(--border); border-radius: 24px; font-size: 15px; background: var(--light); outline: none; color: var(--navy); }
-.cat-tabs { display: flex; gap: 8px; padding: 10px 16px; overflow-x: auto; background: #fff; border-bottom: 1px solid var(--border); scrollbar-width: none; }
-.cat-tabs::-webkit-scrollbar { display: none; }
-.cat { flex-shrink: 0; padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; background: #fff; color: var(--gray); }
-.cat.active { background: var(--navy); color: #fff; border-color: var(--navy); }
-.list { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
-.card { background: #fff; border-radius: 14px; padding: 14px 16px 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.07); border-left: 5px solid transparent; }
-.card.available { border-left-color: var(--green-text); } .card.down { border-left-color: var(--red-text); }
-.machine-name { font-size: 16px; font-weight: 700; color: var(--navy); }
-.machine-sub { font-size: 12px; color: var(--gray); margin-bottom: 8px; }
-.note-row { font-size: 12px; color: var(--gray); background: var(--light); border-radius: 8px; padding: 7px 10px; line-height: 1.4; margin-bottom: 8px; }
-.status-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-.tog-btn { padding: 11px 8px; border-radius: 10px; border: 2px solid var(--border); font-size: 13px; font-weight: 700; cursor: pointer; background: #fff; color: var(--gray); text-align: center; }
-.tog-btn.on-available { background: var(--green-bg); color: var(--green-text); border-color: var(--green-text); }
-.tog-btn.on-down { background: var(--red-bg); color: var(--red-text); border-color: var(--red-text); }
-.card-btns { display: flex; gap: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
-.card-btn { flex: 1; padding: 8px; border-radius: 8px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; background: var(--light); color: var(--navy); }
-.card-btn.danger { background: var(--red-bg); color: var(--red-text); }
-.empty { text-align: center; padding: 60px 20px; color: var(--gray); }
-.empty .icon { font-size: 52px; margin-bottom: 12px; }
-.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; align-items: flex-end; justify-content: center; }
-.overlay.open { display: flex; }
-.sheet { background: #fff; border-radius: 24px 24px 0 0; width: 100%; max-width: 600px; max-height: 92vh; overflow-y: auto; padding-bottom: 40px; animation: up 0.22s ease; }
-@keyframes up { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
-.sheet-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 12px; border-bottom: 1px solid var(--border); }
-.sheet-title { font-size: 18px; font-weight: 700; }
-.close-btn { background: var(--light); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 18px; cursor: pointer; color: var(--gray); display: flex; align-items: center; justify-content: center; }
-.form { padding: 16px 20px; } .fg { margin-bottom: 16px; }
-.fg label { display: block; font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-.fg input, .fg select, .fg textarea { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 15px; color: var(--navy); background: #fff; outline: none; font-family: inherit; -webkit-appearance: none; }
-.fg textarea { height: 90px; resize: none; line-height: 1.5; }
-.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.s-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.s-opt { padding: 14px; border-radius: 12px; border: 2px solid var(--border); text-align: center; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--gray); }
-.s-opt .ico { font-size: 22px; display: block; margin-bottom: 4px; }
-.s-opt.sel-available { border-color: var(--green-text); background: var(--green-bg); color: var(--green-text); }
-.s-opt.sel-down { border-color: var(--red-text); background: var(--red-bg); color: var(--red-text); }
-.f-btns { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
-.f-btn { padding: 15px; border-radius: 12px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; }
-.f-save { background: var(--navy); color: #fff; } .f-cancel { background: var(--light); color: var(--navy); }
-.f-delete { background: var(--red-bg); color: var(--red-text); display: none; }
-.bot-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--border); display: flex; padding: 8px 0 20px; z-index: 100; }
-.nav-i { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: var(--gray); cursor: pointer; padding: 4px; }
-.nav-i.active { color: var(--blue); } .nav-ico { font-size: 22px; }
-.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--navy); color: #fff; padding: 10px 22px; border-radius: 24px; font-size: 14px; font-weight: 600; z-index: 999; opacity: 0; transition: opacity 0.25s, transform 0.25s; pointer-events: none; white-space: nowrap; }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0D1B2A;--blue:#1565C0;--gold:#F5A623;--gbg:#E8F5E9;--gt:#2E7D32;--rbg:#FFEBEE;--rt:#C62828;--gray:#546E7A;--light:#F4F6F8;--border:#E0E6ED}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--light);color:var(--navy);min-height:100vh;padding-bottom:90px}
+.hdr{background:var(--navy);padding:16px 20px 0;position:sticky;top:0;z-index:100}
+.htop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.htop h1{color:#fff;font-size:22px;font-weight:800}.htop h1 span{color:var(--gold)}
+.addbtn{background:var(--gold);color:var(--navy);border:none;border-radius:50%;width:44px;height:44px;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.stabs{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid rgba(255,255,255,.1)}
+.stab{padding:12px 8px 14px;text-align:center;cursor:pointer;border-bottom:3px solid transparent}
+.stab.aa{border-bottom-color:#fff}.stab.av{border-bottom-color:#69F0AE}.stab.dn{border-bottom-color:#FF5252}
+.snum{font-size:24px;font-weight:800;color:#fff}.snum.g{color:#69F0AE}.snum.r{color:#FF5252}
+.slbl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.6);margin-top:2px}
+.sw{padding:12px 16px;background:#fff;border-bottom:1px solid var(--border)}
+.sw input{width:100%;padding:11px 16px;border:1.5px solid var(--border);border-radius:24px;font-size:15px;background:var(--light);outline:none;color:var(--navy)}
+.ctabs{display:flex;gap:8px;padding:10px 16px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--border);scrollbar-width:none}
+.ctabs::-webkit-scrollbar{display:none}
+.ct{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);font-size:13px;font-weight:500;cursor:pointer;background:#fff;color:var(--gray)}
+.ct.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.lst{padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.card{background:#fff;border-radius:14px;padding:14px 16px 12px;box-shadow:0 1px 6px rgba(0,0,0,.07);border-left:5px solid transparent}
+.card.available{border-left-color:var(--gt)}.card.down{border-left-color:var(--rt)}
+.mname{font-size:16px;font-weight:700;color:var(--navy)}
+.msub{font-size:12px;color:var(--gray);margin-bottom:8px}
+.note{font-size:12px;color:var(--gray);background:var(--light);border-radius:8px;padding:7px 10px;line-height:1.4;margin-bottom:8px}
+.stog{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.tb{padding:11px 8px;border-radius:10px;border:2px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:var(--gray);text-align:center}
+.tb.oa{background:var(--gbg);color:var(--gt);border-color:var(--gt)}
+.tb.od{background:var(--rbg);color:var(--rt);border-color:var(--rt)}
+.cbtns{display:flex;gap:8px;padding-top:8px;border-top:1px solid var(--border)}
+.cbtn{flex:1;padding:8px;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;background:var(--light);color:var(--navy)}
+.cbtn.d{background:var(--rbg);color:var(--rt)}
+.empty{text-align:center;padding:60px 20px;color:var(--gray)}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;justify-content:center}
+.ov.open{display:flex}
+.sh{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;padding-bottom:40px;animation:up .22s ease}
+@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.hdl{width:40px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0}
+.shdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--border)}
+.sttl{font-size:18px;font-weight:700}
+.xcl{background:var(--light);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--gray);display:flex;align-items:center;justify-content:center}
+.frm{padding:16px 20px}.fg{margin-bottom:16px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.fg input,.fg select,.fg textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;color:var(--navy);background:#fff;outline:none;font-family:inherit;-webkit-appearance:none}
+.fg textarea{height:90px;resize:none;line-height:1.5}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.spk{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.so{padding:14px;border-radius:12px;border:2px solid var(--border);text-align:center;cursor:pointer;font-size:14px;font-weight:700;color:var(--gray)}
+.so .ico{font-size:22px;display:block;margin-bottom:4px}
+.so.sa{border-color:var(--gt);background:var(--gbg);color:var(--gt)}
+.so.sd{border-color:var(--rt);background:var(--rbg);color:var(--rt)}
+.fbtns{padding:0 20px;display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.fb{padding:15px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer}
+.fsv{background:var(--navy);color:#fff}.fcn{background:var(--light);color:var(--navy)}
+.fdl{background:var(--rbg);color:var(--rt);display:none}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;padding:8px 0 20px;z-index:100}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--gray);cursor:pointer;padding:4px}
+.ni.on{color:var(--blue)}.nico{font-size:22px}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--navy);color:#fff;padding:10px 22px;border-radius:24px;font-size:14px;font-weight:600;z-index:999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="header-top"><h1>FCR <span>Fleet</span></h1><button class="add-btn" onclick="openForm()">+</button></div>
-  <div class="stat-tabs">
-    <div class="stat-tab active-all" id="stab-all" onclick="setFilter('all')"><div class="stat-num" id="cnt-all">0</div><div class="stat-label">All Units</div></div>
-    <div class="stat-tab" id="stab-available" onclick="setFilter('available')"><div class="stat-num available" id="cnt-available">0</div><div class="stat-label">Available</div></div>
-    <div class="stat-tab" id="stab-down" onclick="setFilter('down')"><div class="stat-num down" id="cnt-down">0</div><div class="stat-label">Down</div></div>
-  </div>
+<div class="hdr">
+<div class="htop"><h1>FCR <span>Fleet</span></h1><button class="addbtn" onclick="openF()">+</button></div>
+<div class="stabs">
+<div class="stab aa" id="st-all" onclick="sf('all')"><div class="snum" id="c-all">0</div><div class="slbl">All Units</div></div>
+<div class="stab" id="st-available" onclick="sf('available')"><div class="snum g" id="c-available">0</div><div class="slbl">Available</div></div>
+<div class="stab" id="st-down" onclick="sf('down')"><div class="snum r" id="c-down">0</div><div class="slbl">Down</div></div>
+</div></div>
+<div class="sw"><input type="text" id="srch" placeholder="Search name, ID, notes..." oninput="render()" autocomplete="off"></div>
+<div class="ctabs">
+<div class="ct on" id="ct-all" onclick="sc('all')">All</div>
+<div class="ct" id="ct-gti" onclick="sc('gti')">GTI 130</div>
+<div class="ct" id="ct-t3" onclick="sc('t3')">Spark 3UP</div>
+<div class="ct" id="ct-t2" onclick="sc('t2')">Spark 2UP</div>
+<div class="ct" id="ct-boat" onclick="sc('boat')">Boats</div>
 </div>
-<div class="search-wrap"><input type="text" id="searchIn" placeholder="Search name, ID, notes..." oninput="render()" autocomplete="off"></div>
-<div class="cat-tabs">
-  <div class="cat active" id="cat-all" onclick="setCat('all')">All</div>
-  <div class="cat" id="cat-gti" onclick="setCat('gti')">GTI 130</div>
-  <div class="cat" id="cat-trixx3" onclick="setCat('trixx3')">Spark 3UP</div>
-  <div class="cat" id="cat-trixx2" onclick="setCat('trixx2')">Spark 2UP</div>
-  <div class="cat" id="cat-boat" onclick="setCat('boat')">Boats</div>
+<div class="lst" id="lst"></div>
+<div class="bnav">
+<div class="ni on" onclick="sf('all')"><span class="nico">&#128676;</span><span>All</span></div>
+<div class="ni" onclick="sf('available')"><span class="nico">&#9989;</span><span>Available</span></div>
+<div class="ni" onclick="sf('down')"><span class="nico">&#128308;</span><span>Down</span></div>
+<div class="ni" onclick="openF()"><span class="nico">&#10133;</span><span>Add</span></div>
 </div>
-<div class="list" id="list"></div>
-<div class="bot-nav">
-  <div class="nav-i active" onclick="setFilter('all')"><span class="nav-ico">&#x1F6A4;</span><span>All</span></div>
-  <div class="nav-i" onclick="setFilter('available')"><span class="nav-ico">&#x2705;</span><span>Available</span></div>
-  <div class="nav-i" onclick="setFilter('down')"><span class="nav-ico">&#x1F534;</span><span>Down</span></div>
-  <div class="nav-i" onclick="openForm()"><span class="nav-ico">&#x2795;</span><span>Add</span></div>
+<div class="ov" id="ov">
+<div class="sh">
+<div class="hdl"></div>
+<div class="shdr"><div class="sttl" id="ftitle">Add Machine</div><button class="xcl" onclick="closeF()">&#x2715;</button></div>
+<div class="frm">
+<input type="hidden" id="fid">
+<div class="fg"><label>Machine Name *</label><input type="text" id="fname" placeholder="e.g. Sea-Doo GTI 130" autocomplete="off"></div>
+<div class="two">
+<div class="fg"><label>Machine ID</label><input type="text" id="fmid" placeholder="e.g. 14, T3, A" autocomplete="off"></div>
+<div class="fg"><label>Year</label><input type="text" id="fyr" placeholder="2023" autocomplete="off"></div>
 </div>
-<div class="overlay" id="overlay">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-header"><div class="sheet-title" id="formTitle">Add Machine</div><button class="close-btn" onclick="closeForm()">&#x2715;</button></div>
-    <div class="form">
-      <input type="hidden" id="fId">
-      <div class="fg"><label>Machine Name *</label><input type="text" id="fName" placeholder="e.g. Sea-Doo GTI 130" autocomplete="off"></div>
-      <div class="two">
-        <div class="fg"><label>Machine ID</label><input type="text" id="fMid" placeholder="e.g. 14, T3, A" autocomplete="off"></div>
-        <div class="fg"><label>Year</label><input type="text" id="fYear" placeholder="e.g. 2023" autocomplete="off"></div>
-      </div>
-      <div class="fg"><label>Category</label><select id="fCat"><option value="gti">Sea-Doo GTI 130</option><option value="trixx3">Sea-Doo Spark Trixx 3UP</option><option value="trixx2">Sea-Doo Spark Trixx 2UP</option><option value="boat">Boat</option></select></div>
-      <div class="fg"><label>Status</label><div class="s-pick"><div class="s-opt" data-s="available" onclick="pickStatus('available')"><span class="ico">&#x2705;</span>Available</div><div class="s-opt" data-s="down" onclick="pickStatus('down')"><span class="ico">&#x1F534;</span>Down</div></div></div>
-      <div class="fg"><label>Notes</label><textarea id="fNotes" placeholder="e.g. Hull damage, needs impeller..."></textarea></div>
-    </div>
-    <div class="f-btns">
-      <button class="f-btn f-save" onclick="save()">Save Machine</button>
-      <button class="f-btn f-cancel" onclick="closeForm()">Cancel</button>
-      <button class="f-btn f-delete" id="fDelBtn" onclick="del()">Remove Machine</button>
-    </div>
-  </div>
+<div class="fg"><label>Category</label><select id="fcat">
+<option value="gti">Sea-Doo GTI 130</option>
+<option value="t3">Sea-Doo Spark Trixx 3UP</option>
+<option value="t2">Sea-Doo Spark Trixx 2UP</option>
+<option value="boat">Boat</option>
+</select></div>
+<div class="fg"><label>Status</label><div class="spk">
+<div class="so" data-s="available" onclick="ps('available')"><span class="ico">&#9989;</span>Available</div>
+<div class="so" data-s="down" onclick="ps('down')"><span class="ico">&#128308;</span>Down</div>
+</div></div>
+<div class="fg"><label>Notes</label><textarea id="fnotes" placeholder="e.g. Hull damage, needs impeller..."></textarea></div>
 </div>
+<div class="fbtns">
+<button class="fb fsv" onclick="saveM()">Save Machine</button>
+<button class="fb fcn" onclick="closeF()">Cancel</button>
+<button class="fb fdl" id="fdel" onclick="delM()">Remove Machine</button>
+</div></div></div>
 <div class="toast" id="toast"></div>
 <script>
-const KEY='fcr_fleet_v4';
-const CATS={gti:'GTI 130',trixx3:'Spark Trixx 3UP',trixx2:'Spark Trixx 2UP',boat:'Boat'};
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY));return s&&s.length?s:seed();}catch{return seed();}}
-function store(d){localStorage.setItem(KEY,JSON.stringify(d));}
-function seed(){let id=1;const m=(name,mid,year,cat)=>({id:id++,name,mid,year,cat,status:'available',notes:''});return[
-m('Sea-Doo GTI 130','1','2022','gti'),m('Sea-Doo GTI 130','2','2022','gti'),m('Sea-Doo GTI 130','4','2022','gti'),
-m('Sea-Doo GTI 130','6','2025','gti'),m('Sea-Doo GTI 130','7','2025','gti'),m('Sea-Doo GTI 130','8','2025','gti'),
-m('Sea-Doo GTI 130','11','2022','gti'),m('Sea-Doo GTI 130','12','2025','gti'),m('Sea-Doo GTI 130','13','2022','gti'),
-m('Sea-Doo GTI 130','14','2024','gti'),m('Sea-Doo GTI 130','15','2024','gti'),m('Sea-Doo GTI 130','16','2022','gti'),
-m('Sea-Doo GTI 130','17','2023','gti'),m('Sea-Doo GTI 130','18','2025','gti'),m('Sea-Doo GTI 130','19','2023','gti'),
-m('Sea-Doo GTI 130','20','2023','gti'),m('Sea-Doo GTI 130','21','2023','gti'),m('Sea-Doo GTI 130','22','2024','gti'),
-m('Sea-Doo GTI 130','23','2024','gti'),m('Sea-Doo GTI 130','24','2024','gti'),m('Sea-Doo GTI 130','25','2024','gti'),
-m('Sea-Doo GTI 130','26','2024','gti'),m('Sea-Doo GTI 130','27','2023','gti'),m('Sea-Doo GTI 130','28','2022','gti'),
-m('Sea-Doo GTI 130','29','2024','gti'),m('Sea-Doo GTI 130','33','2021','gti'),m('Sea-Doo GTI 130','37','2021','gti'),
-m('Sea-Doo GTI 130','38','2025','gti'),m('Sea-Doo GTI 130','39','2025','gti'),m('Sea-Doo GTI 130','40','2023','gti'),
-m('Sea-Doo Spark Trixx 3UP','5','2024','trixx3'),m('Sea-Doo Spark Trixx 3UP','9','2022','trixx3'),
-m('Sea-Doo Spark Trixx 3UP','10','2022','trixx3'),m('Sea-Doo Spark Trixx 3UP','30','2025','trixx3'),
-m('Sea-Doo Spark Trixx 3UP','31','2025','trixx3'),m('Sea-Doo Spark Trixx 3UP','32','2024','trixx3'),
-m('Sea-Doo Spark Trixx 3UP','34','2024','trixx3'),m('Sea-Doo Spark Trixx 3UP','35','2024','trixx3'),
-m('Sea-Doo Spark Trixx 3UP','41','2023','trixx3'),m('Sea-Doo Spark Trixx 3UP','42','2023','trixx3'),
-m('Sea-Doo Spark Trixx 2UP','A','2023','trixx2'),m('Sea-Doo Spark Trixx 2UP','B','2023','trixx2'),m('Sea-Doo Spark Trixx 2UP','J','2022','trixx2'),
-m('MB B52 23ft Surf Boat','46','2022','boat'),m('MB B52 23ft Surf Boat','47','2024','boat')];}
-let machines=load(),filterStatus='all',filterCat='all',pickedStatus='available';
-function setFilter(s){filterStatus=s;document.querySelectorAll('.stat-tab').forEach(e=>e.className='stat-tab');document.getElementById('stab-'+s).classList.add('active-'+s);render();}
-function setCat(c){filterCat=c;document.querySelectorAll('.cat').forEach(e=>e.classList.remove('active'));document.getElementById('cat-'+c).classList.add('active');render();}
-function setStatus(id,s,e){e.stopPropagation();const m=machines.find(x=>x.id===id);if(!m||m.status===s)return;m.status=s;store(machines);render();}
-function render(){const q=document.getElementById('searchIn').value.toLowerCase();const el=document.getElementById('list');const filtered=machines.filter(m=>{const fs=filterStatus==='all'||m.status===filterStatus;const fc=filterCat==='all'||m.cat===filterCat;const fq=!q||m.name.toLowerCase().includes(q)||m.mid.toLowerCase().includes(q)||(m.notes||'').toLowerCase().includes(q);return fs&&fc&&fq;});document.getElementById('cnt-all').textContent=machines.length;document.getElementById('cnt-available').textContent=machines.filter(m=>m.status==='available').length;document.getElementById('cnt-down').textContent=machines.filter(m=>m.status==='down').length;if(!filtered.length){el.innerHTML='<div class="empty"><div class="icon">&#x1F50D;</div><p>No machines found</p></div>';return;}el.innerHTML=filtered.map(m=>{const isAvail=m.status==='available';const noteHtml=m.notes?'<div class="note-row">'+m.notes+'</div>':'';return'<div class="card '+m.status+'"><div class="machine-name">'+m.name+' - #'+m.mid+'</div><div class="machine-sub">'+(m.year?m.year+' - ':'')+CATS[m.cat]+'</div>'+noteHtml+'<div class="status-toggle"><div class="tog-btn '+(isAvail?'on-available':'')+'" onclick="setStatus('+m.id+','available',event)">Available</div><div class="tog-btn '+(!isAvail?'on-down':'')+'" onclick="setStatus('+m.id+','down',event)">Down</div></div><div class="card-btns"><button class="card-btn" onclick="openForm('+m.id+')">Edit/Notes</button><button class="card-btn danger" onclick="remove('+m.id+',event)">Remove</button></div></div>';}).join('');}
-function openForm(id){const m=id?machines.find(x=>x.id===id):null;document.getElementById('formTitle').textContent=m?'Edit Machine':'Add Machine';document.getElementById('fId').value=m?m.id:'';document.getElementById('fName').value=m?m.name:'';document.getElementById('fMid').value=m?m.mid:'';document.getElementById('fYear').value=m?m.year:'';document.getElementById('fCat').value=m?m.cat:'gti';document.getElementById('fNotes').value=m?m.notes:'';document.getElementById('fDelBtn').style.display=m?'block':'none';pickStatus(m?m.status:'available');document.getElementById('overlay').classList.add('open');}
-function pickStatus(s){pickedStatus=s;document.querySelectorAll('.s-opt').forEach(e=>{e.className='s-opt';if(e.dataset.s===s)e.classList.add('sel-'+s);});}
-function save(){const name=document.getElementById('fName').value.trim();if(!name){alert('Enter machine name');return;}const eid=document.getElementById('fId').value;const m={id:eid?parseInt(eid):Date.now(),name,mid:document.getElementById('fMid').value.trim()||'-',year:document.getElementById('fYear').value.trim(),cat:document.getElementById('fCat').value,status:pickedStatus,notes:document.getElementById('fNotes').value.trim()};if(eid){const i=machines.findIndex(x=>x.id===parseInt(eid));if(i!==-1)machines[i]=m;}else{machines.push(m);}store(machines);closeForm();render();}
-function del(){const id=parseInt(document.getElementById('fId').value);if(!confirm('Remove this machine?'))return;machines=machines.filter(x=>x.id!==id);store(machines);closeForm();render();}
-function remove(id,e){e.stopPropagation();if(!confirm('Remove this machine?'))return;machines=machines.filter(x=>x.id!==id);store(machines);render();}
-function closeForm(){document.getElementById('overlay').classList.remove('open');}
-document.getElementById('overlay').addEventListener('click',e=>{if(e.target===document.getElementById('overlay'))closeForm();});
+const KEY='fcr_v5';
+const CL={gti:'GTI 130',t3:'Spark 3UP',t2:'Spark 2UP',boat:'Boat'};
+const SEED=[
+{id:1,name:'Sea-Doo GTI 130',mid:'1',yr:'2022',cat:'gti',status:'available',notes:''},
+{id:2,name:'Sea-Doo GTI 130',mid:'2',yr:'2022',cat:'gti',status:'available',notes:''},
+{id:3,name:'Sea-Doo GTI 130',mid:'4',yr:'2022',cat:'gti',status:'available',notes:''},
+{id:4,name:'Sea-Doo GTI 130',mid:'6',yr:'2025',cat:'gti',status:'available',notes:''},
+{id:5,name:'Sea-Doo GTI 130',mid:'7',yr:'2025',cat:'gti',status:'available',notes:''},
+{id:6,name:'Sea-Doo GTI 130',mid:'8',yr:'2025',cat:'gti',status:'available',notes:''},
+{id:7,name:'Sea-Doo GTI 130',mid:'11',yr:'2022',cat:'gti',status:'available',notes:''},
+{id:8,name:'Sea-Doo GTI 130',mid:'12',yr:'2025',cat:'gti',status:'available',notes:''},
+{id:9,name:'Sea-Doo GTI 130',mid:'13',yr:'2022',cat:'gti',status:'available',notes:''},
+{id:10,name:'Sea-Doo GTI 130',mid:'14',yr:'2024',cat:'gti',status:'available',notes:''},
+{id:11,name:'Sea-Doo GTI 130',mid:'15',yr:'2024',cat:'gti',status:'available',notes:''},
+{id:12,name:'Sea-Doo GTI 130',mid:'16',yr:'2022',cat:'gti',status:'available',notes:''},
+{id:13,name:'Sea-Doo GTI 130',mid:'17',yr:'2023',cat:'gti',status:'available',notes:''},
+{id:14,name:'Sea-Doo GTI 130',mid:'18',yr:'2025',cat:'gti',status:'available',notes:''},
+{id:15,name:'Sea-Doo GTI 130',mid:'19',yr:'2023',cat:'gti',status:'available',notes:''},
+{id:16,name:'Sea-Doo GTI 130',mid:'20',yr:'2023',cat:'gti',status:'available',notes:''},
+{id:17,name:'Sea-Doo GTI 130',mid:'21',yr:'2023',cat:'gti',status:'available',notes:''},
+{id:18,name:'Sea-Doo GTI 130',mid:'22',yr:'2024',cat:'gti',status:'available',notes:''},
+{id:19,name:'Sea-Doo GTI 130',mid:'23',yr:'2024',cat:'gti',status:'available',notes:''},
+{id:20,name:'Sea-Doo GTI 130',mid:'24',yr:'2024',cat:'gti',status:'available',notes:''},
+{id:21,name:'Sea-Doo GTI 130',mid:'25',yr:'2024',cat:'gti',status:'available',notes:''},
+{id:22,name:'Sea-Doo GTI 130',mid:'26',yr:'2024',cat:'gti',status:'available',notes:''},
+{id:23,name:'Sea-Doo GTI 130',mid:'27',yr:'2023',cat:'gti',status:'available',notes:''},
+{id:24,name:'Sea-Doo GTI 130',mid:'28',yr:'2022',cat:'gti',status:'available',notes:''},
+{id:25,name:'Sea-Doo GTI 130',mid:'29',yr:'2024',cat:'gti',status:'available',notes:''},
+{id:26,name:'Sea-Doo GTI 130',mid:'33',yr:'2021',cat:'gti',status:'available',notes:''},
+{id:27,name:'Sea-Doo GTI 130',mid:'37',yr:'2021',cat:'gti',status:'available',notes:''},
+{id:28,name:'Sea-Doo GTI 130',mid:'38',yr:'2025',cat:'gti',status:'available',notes:''},
+{id:29,name:'Sea-Doo GTI 130',mid:'39',yr:'2025',cat:'gti',status:'available',notes:''},
+{id:30,name:'Sea-Doo GTI 130',mid:'40',yr:'2023',cat:'gti',status:'available',notes:''},
+{id:31,name:'Sea-Doo Spark Trixx 3UP',mid:'5',yr:'2024',cat:'t3',status:'available',notes:''},
+{id:32,name:'Sea-Doo Spark Trixx 3UP',mid:'9',yr:'2022',cat:'t3',status:'available',notes:''},
+{id:33,name:'Sea-Doo Spark Trixx 3UP',mid:'10',yr:'2022',cat:'t3',status:'available',notes:''},
+{id:34,name:'Sea-Doo Spark Trixx 3UP',mid:'30',yr:'2025',cat:'t3',status:'available',notes:''},
+{id:35,name:'Sea-Doo Spark Trixx 3UP',mid:'31',yr:'2025',cat:'t3',status:'available',notes:''},
+{id:36,name:'Sea-Doo Spark Trixx 3UP',mid:'32',yr:'2024',cat:'t3',status:'available',notes:''},
+{id:37,name:'Sea-Doo Spark Trixx 3UP',mid:'34',yr:'2024',cat:'t3',status:'available',notes:''},
+{id:38,name:'Sea-Doo Spark Trixx 3UP',mid:'35',yr:'2024',cat:'t3',status:'available',notes:''},
+{id:39,name:'Sea-Doo Spark Trixx 3UP',mid:'41',yr:'2023',cat:'t3',status:'available',notes:''},
+{id:40,name:'Sea-Doo Spark Trixx 3UP',mid:'42',yr:'2023',cat:'t3',status:'available',notes:''},
+{id:41,name:'Sea-Doo Spark Trixx 2UP',mid:'A',yr:'2023',cat:'t2',status:'available',notes:''},
+{id:42,name:'Sea-Doo Spark Trixx 2UP',mid:'B',yr:'2023',cat:'t2',status:'available',notes:''},
+{id:43,name:'Sea-Doo Spark Trixx 2UP',mid:'J',yr:'2022',cat:'t2',status:'available',notes:''},
+{id:44,name:'MB B52 23ft Surf Boat',mid:'46',yr:'2022',cat:'boat',status:'available',notes:''},
+{id:45,name:'MB B52 23ft Surf Boat',mid:'47',yr:'2024',cat:'boat',status:'available',notes:''}
+];
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));return s&&s.length?s:JSON.parse(JSON.stringify(SEED));}catch{return JSON.parse(JSON.stringify(SEED));}}
+function save(d){localStorage.setItem(KEY,JSON.stringify(d));}
+let M=load(),fst='all',fcat='all',pst='available';
+function sf(s){fst=s;document.querySelectorAll('.stab').forEach(e=>e.className='stab');const m={all:'aa',available:'av',down:'dn'};document.getElementById('st-'+s).classList.add(m[s]);render();}
+function sc(c){fcat=c;document.querySelectorAll('.ct').forEach(e=>e.classList.remove('on'));document.getElementById('ct-'+c).classList.add('on');render();}
+function setS(id,s,e){e.stopPropagation();const m=M.find(x=>x.id===id);if(!m||m.status===s)return;m.status=s;save(M);render();toast((s==='available'?'Available':'Down')+': #'+m.mid+' '+m.name);}
+function render(){
+const q=document.getElementById('srch').value.toLowerCase();
+const el=document.getElementById('lst');
+const f=M.filter(m=>{
+const fs=fst==='all'||m.status===fst;
+const fc=fcat==='all'||m.cat===fcat;
+const fq=!q||m.name.toLowerCase().includes(q)||m.mid.toLowerCase().includes(q)||(m.notes||'').toLowerCase().includes(q);
+return fs&&fc&&fq;
+});
+document.getElementById('c-all').textContent=M.length;
+document.getElementById('c-available').textContent=M.filter(m=>m.status==='available').length;
+document.getElementById('c-down').textContent=M.filter(m=>m.status==='down').length;
+if(!f.length){el.innerHTML='<div class="empty"><div style="font-size:52px;margin-bottom:12px">&#128269;</div><p>No machines found</p></div>';return;}
+el.innerHTML=f.map(m=>{
+const ia=m.status==='available';
+const nt=m.notes?'<div class="note">'+m.notes+'</div>':'';
+return '<div class="card '+m.status+'"><div class="mname">'+m.name+' - #'+m.mid+'</div><div class="msub">'+(m.yr?m.yr+' - ':'')+CL[m.cat]+'</div>'+nt+'<div class="stog"><div class="tb '+(ia?'oa':'')+'" onclick="setS('+m.id+','available',event)">&#9989; Available</div><div class="tb '+(!ia?'od':'')+'" onclick="setS('+m.id+','down',event)">&#128308; Down</div></div><div class="cbtns"><button class="cbtn" onclick="openF('+m.id+')">Edit/Notes</button><button class="cbtn d" onclick="rm('+m.id+',event)">Remove</button></div></div>';
+}).join('');
+}
+function openF(id){const m=id?M.find(x=>x.id===id):null;document.getElementById('ftitle').textContent=m?'Edit Machine':'Add Machine';document.getElementById('fid').value=m?m.id:'';document.getElementById('fname').value=m?m.name:'';document.getElementById('fmid').value=m?m.mid:'';document.getElementById('fyr').value=m?m.yr:'';document.getElementById('fcat').value=m?m.cat:'gti';document.getElementById('fnotes').value=m?m.notes:'';document.getElementById('fdel').style.display=m?'block':'none';ps(m?m.status:'available');document.getElementById('ov').classList.add('open');}
+function ps(s){pst=s;document.querySelectorAll('.so').forEach(e=>{e.className='so';if(e.dataset.s===s)e.classList.add('s'+s[0])});}
+function saveM(){const n=document.getElementById('fname').value.trim();if(!n){alert('Enter machine name');return;}const eid=document.getElementById('fid').value;const m={id:eid?parseInt(eid):Date.now(),name:n,mid:document.getElementById('fmid').value.trim()||'-',yr:document.getElementById('fyr').value.trim(),cat:document.getElementById('fcat').value,status:pst,notes:document.getElementById('fnotes').value.trim()};if(eid){const i=M.findIndex(x=>x.id===parseInt(eid));if(i!==-1)M[i]=m;}else{M.push(m);}save(M);closeF();render();toast(eid?'Updated':'Added');}
+function delM(){const id=parseInt(document.getElementById('fid').value);if(!confirm('Remove this machine?'))return;M=M.filter(x=>x.id!==id);save(M);closeF();render();toast('Removed');}
+function rm(id,e){e.stopPropagation();if(!confirm('Remove?'))return;M=M.filter(x=>x.id!==id);save(M);render();toast('Removed');}
+function closeF(){document.getElementById('ov').classList.remove('open');}
+document.getElementById('ov').addEventListener('click',e=>{if(e.target===document.getElementById('ov'))closeF();});
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 render();
 </script>
