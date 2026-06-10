@@ -7,75 +7,110 @@
 <title>FCR Fleet Manager</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0D1B2A;--blue:#1565C0;--gold:#F5A623;--gbg:#E8F5E9;--gt:#2E7D32;--rbg:#FFEBEE;--rt:#C62828;--gray:#546E7A;--light:#F4F6F8;--border:#E0E6ED}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--light);color:var(--navy);min-height:100vh;padding-bottom:90px}
-.hdr{background:var(--navy);padding:16px 20px 0;position:sticky;top:0;z-index:100}
+:root{--n:#0D1B2A;--b:#1565C0;--g:#F5A623;--gbg:#E8F5E9;--gt:#2E7D32;--rbg:#FFEBEE;--rt:#C62828;--gray:#546E7A;--li:#F4F6F8;--br:#E0E6ED}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li);color:var(--n);min-height:100vh;padding-bottom:90px}
+.hdr{background:var(--n);padding:16px 20px 0;position:sticky;top:0;z-index:100}
 .htop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.htop h1{color:#fff;font-size:22px;font-weight:800}.htop h1 span{color:var(--gold)}
-.addbtn{background:var(--gold);color:var(--navy);border:none;border-radius:50%;width:44px;height:44px;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.htop h1{color:#fff;font-size:22px;font-weight:800}
+.htop h1 span{color:var(--g)}
+.addbtn{background:var(--g);color:var(--n);border:none;border-radius:50%;width:44px;height:44px;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .stabs{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid rgba(255,255,255,.1)}
 .stab{padding:12px 8px 14px;text-align:center;cursor:pointer;border-bottom:3px solid transparent}
-.stab.aa{border-bottom-color:#fff}.stab.av{border-bottom-color:#69F0AE}.stab.dn{border-bottom-color:#FF5252}
-.snum{font-size:24px;font-weight:800;color:#fff}.snum.g{color:#69F0AE}.snum.r{color:#FF5252}
-.slbl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.6);margin-top:2px}
-.sw{padding:12px 16px;background:#fff;border-bottom:1px solid var(--border)}
-.sw input{width:100%;padding:11px 16px;border:1.5px solid var(--border);border-radius:24px;font-size:15px;background:var(--light);outline:none;color:var(--navy)}
-.ctabs{display:flex;gap:8px;padding:10px 16px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--border);scrollbar-width:none}
+.stab.aa{border-bottom-color:#fff}
+.stab.av{border-bottom-color:#69F0AE}
+.stab.dn{border-bottom-color:#FF5252}
+.sn{font-size:24px;font-weight:800;color:#fff}
+.sn.g{color:#69F0AE}
+.sn.r{color:#FF5252}
+.sl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.6);margin-top:2px}
+.sw{padding:12px 16px;background:#fff;border-bottom:1px solid var(--br)}
+.sw input{width:100%;padding:11px 16px;border:1.5px solid var(--br);border-radius:24px;font-size:15px;background:var(--li);outline:none;color:var(--n)}
+.ctabs{display:flex;gap:8px;padding:10px 16px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--br);scrollbar-width:none}
 .ctabs::-webkit-scrollbar{display:none}
-.ct{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);font-size:13px;font-weight:500;cursor:pointer;background:#fff;color:var(--gray)}
-.ct.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ct{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1.5px solid var(--br);font-size:13px;font-weight:500;cursor:pointer;background:#fff;color:var(--gray)}
+.ct.on{background:var(--n);color:#fff;border-color:var(--n)}
 .lst{padding:12px 16px;display:flex;flex-direction:column;gap:10px}
 .card{background:#fff;border-radius:14px;padding:14px 16px 12px;box-shadow:0 1px 6px rgba(0,0,0,.07);border-left:5px solid transparent}
-.card.available{border-left-color:var(--gt)}.card.down{border-left-color:var(--rt)}
-.mname{font-size:16px;font-weight:700;color:var(--navy)}
-.msub{font-size:12px;color:var(--gray);margin-bottom:8px}
-.note{font-size:12px;color:var(--gray);background:var(--light);border-radius:8px;padding:7px 10px;line-height:1.4;margin-bottom:8px}
-.stog{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.tb{padding:11px 8px;border-radius:10px;border:2px solid var(--border);font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:var(--gray);text-align:center}
+.card.available{border-left-color:var(--gt)}
+.card.down{border-left-color:var(--rt)}
+.mn{font-size:16px;font-weight:700;color:var(--n)}
+.ms{font-size:12px;color:var(--gray);margin-bottom:8px}
+.nt{font-size:12px;color:var(--gray);background:var(--li);border-radius:8px;padding:7px 10px;line-height:1.4;margin-bottom:8px}
+.tog{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.tb{padding:11px 8px;border-radius:10px;border:2px solid var(--br);font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:var(--gray);text-align:center}
 .tb.oa{background:var(--gbg);color:var(--gt);border-color:var(--gt)}
 .tb.od{background:var(--rbg);color:var(--rt);border-color:var(--rt)}
-.cbtns{display:flex;gap:8px;padding-top:8px;border-top:1px solid var(--border)}
-.cbtn{flex:1;padding:8px;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;background:var(--light);color:var(--navy)}
-.cbtn.d{background:var(--rbg);color:var(--rt)}
+.cbtns{display:flex;gap:8px;padding-top:8px;border-top:1px solid var(--br)}
+.cb{flex:1;padding:8px;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;background:var(--li);color:var(--n)}
+.cb.red{background:var(--rbg);color:var(--rt)}
 .empty{text-align:center;padding:60px 20px;color:var(--gray)}
+/* SHEET */
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;justify-content:center}
 .ov.open{display:flex}
-.sh{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;padding-bottom:40px;animation:up .22s ease}
-@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.hdl{width:40px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0}
-.shdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--border)}
+.sh{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;padding-bottom:40px}
+.hdl{width:40px;height:4px;background:var(--br);border-radius:2px;margin:12px auto 0}
+.shdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--br)}
 .sttl{font-size:18px;font-weight:700}
-.xcl{background:var(--light);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--gray);display:flex;align-items:center;justify-content:center}
-.frm{padding:16px 20px}.fg{margin-bottom:16px}
+.xcl{background:var(--li);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--gray);display:flex;align-items:center;justify-content:center}
+.frm{padding:16px 20px}
+.fg{margin-bottom:16px}
 .fg label{display:block;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.fg input,.fg select,.fg textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;color:var(--navy);background:#fff;outline:none;font-family:inherit;-webkit-appearance:none}
-.fg textarea{height:90px;resize:none;line-height:1.5}
+.fg input,.fg select,.fg textarea{width:100%;padding:12px 14px;border:1.5px solid var(--br);border-radius:10px;font-size:15px;color:var(--n);background:#fff;outline:none;font-family:inherit;-webkit-appearance:none}
+.fg textarea{height:80px;resize:none;line-height:1.5}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .spk{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.so{padding:14px;border-radius:12px;border:2px solid var(--border);text-align:center;cursor:pointer;font-size:14px;font-weight:700;color:var(--gray)}
-.so .ico{font-size:22px;display:block;margin-bottom:4px}
+.so{padding:14px;border-radius:12px;border:2px solid var(--br);text-align:center;cursor:pointer;font-size:14px;font-weight:700;color:var(--gray)}
+.so .ic{font-size:22px;display:block;margin-bottom:4px}
 .so.sa{border-color:var(--gt);background:var(--gbg);color:var(--gt)}
 .so.sd{border-color:var(--rt);background:var(--rbg);color:var(--rt)}
 .fbtns{padding:0 20px;display:flex;flex-direction:column;gap:10px;margin-top:4px}
 .fb{padding:15px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer}
-.fsv{background:var(--navy);color:#fff}.fcn{background:var(--light);color:var(--navy)}
+.fsv{background:var(--n);color:#fff}
+.fcn{background:var(--li);color:var(--n)}
 .fdl{background:var(--rbg);color:var(--rt);display:none}
-.bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;padding:8px 0 20px;z-index:100}
+/* HISTORY */
+.hpage{padding:16px}
+.hback{background:var(--n);padding:16px 20px;display:flex;align-items:center;gap:12px}
+.hback button{background:none;border:none;color:#fff;font-size:20px;cursor:pointer}
+.hback .htitle{color:#fff;font-size:17px;font-weight:700}
+.hback .hsub{color:rgba(255,255,255,.6);font-size:12px}
+.hedit{background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
+.svc-types{display:flex;gap:8px;margin-bottom:12px}
+.svcbt{flex:1;padding:8px 4px;border-radius:8px;border:1.5px solid var(--br);background:#fff;font-size:12px;font-weight:600;cursor:pointer;color:var(--gray);text-align:center}
+.svcbt.on{border-color:var(--b);background:#E3F2FD;color:var(--b)}
+.addsvc{width:100%;padding:10px;border-radius:10px;border:1.5px dashed var(--br);background:#fff;font-size:13px;font-weight:600;color:var(--b);cursor:pointer;margin-bottom:12px}
+.svcbox{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;border:1.5px solid var(--br)}
+.hentry{padding:10px 14px;border-radius:10px;background:var(--li);margin-bottom:8px}
+.hdate{font-size:11px;color:var(--gray);margin-bottom:2px}
+.htype{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-bottom:4px}
+.ht-service{background:#FFF3E0;color:#E65100}
+.ht-repair{background:var(--rbg);color:var(--rt)}
+.ht-note{background:var(--li);color:var(--gray)}
+.ht-status{background:#E3F2FD;color:var(--b)}
+.hnote{font-size:13px;color:var(--n);line-height:1.4}
+.divider{height:1px;background:var(--br);margin:16px 0}
+.srow{display:flex;gap:8px}
+/* BNAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--br);display:flex;padding:8px 0 20px;z-index:100}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--gray);cursor:pointer;padding:4px}
-.ni.on{color:var(--blue)}.nico{font-size:22px}
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--navy);color:#fff;padding:10px 22px;border-radius:24px;font-size:14px;font-weight:600;z-index:999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap}
+.ni.on{color:var(--b)}
+.nico{font-size:22px}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--n);color:#fff;padding:10px 22px;border-radius:24px;font-size:14px;font-weight:600;z-index:999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
+
+<!-- FLEET VIEW -->
+<div id="fleetView">
 <div class="hdr">
-<div class="htop"><h1>FCR <span>Fleet</span></h1><button class="addbtn" onclick="openF()">+</button></div>
+<div class="htop"><h1>FCR <span>Fleet</span></h1><button class="addbtn" onclick="openForm()">+</button></div>
 <div class="stabs">
-<div class="stab aa" id="st-all" onclick="sf('all')"><div class="snum" id="c-all">0</div><div class="slbl">All Units</div></div>
-<div class="stab" id="st-available" onclick="sf('available')"><div class="snum g" id="c-available">0</div><div class="slbl">Available</div></div>
-<div class="stab" id="st-down" onclick="sf('down')"><div class="snum r" id="c-down">0</div><div class="slbl">Down</div></div>
+<div class="stab aa" id="st-all" onclick="sf('all')"><div class="sn" id="c-all">0</div><div class="sl">All Units</div></div>
+<div class="stab" id="st-available" onclick="sf('available')"><div class="sn g" id="c-av">0</div><div class="sl">Available</div></div>
+<div class="stab" id="st-down" onclick="sf('down')"><div class="sn r" id="c-dn">0</div><div class="sl">Down</div></div>
 </div></div>
-<div class="sw"><input type="text" id="srch" placeholder="Search name, ID, notes..." oninput="render()" autocomplete="off"></div>
+<div class="sw"><input id="srch" placeholder="Search name, ID, notes..." oninput="render()" autocomplete="off"></div>
 <div class="ctabs">
 <div class="ct on" id="ct-all" onclick="sc('all')">All</div>
 <div class="ct" id="ct-gti" onclick="sc('gti')">GTI 130</div>
@@ -85,21 +120,54 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 <div class="lst" id="lst"></div>
 <div class="bnav">
-<div class="ni on" onclick="sf('all')"><span class="nico">&#128676;</span><span>All</span></div>
-<div class="ni" onclick="sf('available')"><span class="nico">&#9989;</span><span>Available</span></div>
-<div class="ni" onclick="sf('down')"><span class="nico">&#128308;</span><span>Down</span></div>
-<div class="ni" onclick="openF()"><span class="nico">&#10133;</span><span>Add</span></div>
+<div class="ni on" id="bn-all" onclick="sf('all')"><span class="nico">&#128676;</span><span>All</span></div>
+<div class="ni" id="bn-available" onclick="sf('available')"><span class="nico">&#9989;</span><span>Available</span></div>
+<div class="ni" id="bn-down" onclick="sf('down')"><span class="nico">&#128308;</span><span>Down</span></div>
+<div class="ni" onclick="openForm()"><span class="nico">&#10133;</span><span>Add</span></div>
 </div>
-<div class="ov" id="ov">
+</div>
+
+<!-- HISTORY VIEW -->
+<div id="histView" style="display:none">
+<div class="hback">
+<button onclick="showFleet()">&#8592;</button>
+<div style="flex:1"><div class="htitle" id="hTitle"></div><div class="hsub" id="hSub"></div></div>
+<button class="hedit" onclick="editFromHist()">&#9998; Edit</button>
+</div>
+<div class="hpage">
+<div class="tog" id="histTog"></div>
+<div id="histNoteBox"></div>
+<div class="divider"></div>
+<div style="font-size:16px;font-weight:700;margin-bottom:12px">Service &amp; History</div>
+<button class="addsvc" id="addSvcBtn" onclick="toggleSvcForm()">+ Add Service / Repair / Note</button>
+<div id="svcForm" style="display:none" class="svcbox">
+<div class="svc-types">
+<div class="svcbt on" id="sbt-service" onclick="setSvcType('service')">&#128295; Service</div>
+<div class="svcbt" id="sbt-repair" onclick="setSvcType('repair')">&#128296; Repair</div>
+<div class="svcbt" id="sbt-note" onclick="setSvcType('note')">&#128221; Note</div>
+</div>
+<div class="fg"><label>Date</label><input id="svcDate" /></div>
+<div class="fg"><label>Details</label><textarea id="svcNote" placeholder="Describe the work, parts replaced, cost..."></textarea></div>
+<div class="srow">
+<button class="fb fsv" style="flex:1;padding:11px" onclick="saveSvcEntry()">Save Entry</button>
+<button class="fb fcn" style="flex:1;padding:11px" onclick="toggleSvcForm()">Cancel</button>
+</div>
+</div>
+<div id="histList"></div>
+</div>
+</div>
+
+<!-- ADD/EDIT FORM -->
+<div class="ov" id="formOv">
 <div class="sh">
 <div class="hdl"></div>
-<div class="shdr"><div class="sttl" id="ftitle">Add Machine</div><button class="xcl" onclick="closeF()">&#x2715;</button></div>
+<div class="shdr"><div class="sttl" id="formTitle">Add Machine</div><button class="xcl" onclick="closeForm()">&#x2715;</button></div>
 <div class="frm">
 <input type="hidden" id="fid">
-<div class="fg"><label>Machine Name *</label><input type="text" id="fname" placeholder="e.g. Sea-Doo GTI 130" autocomplete="off"></div>
+<div class="fg"><label>Machine Name *</label><input id="fname" placeholder="Sea-Doo GTI 130" autocomplete="off"></div>
 <div class="two">
-<div class="fg"><label>Machine ID</label><input type="text" id="fmid" placeholder="e.g. 14, T3, A" autocomplete="off"></div>
-<div class="fg"><label>Year</label><input type="text" id="fyr" placeholder="2023" autocomplete="off"></div>
+<div class="fg"><label>Machine ID</label><input id="fmid" placeholder="14, T3, A" autocomplete="off"></div>
+<div class="fg"><label>Year</label><input id="fyr" placeholder="2023" autocomplete="off"></div>
 </div>
 <div class="fg"><label>Category</label><select id="fcat">
 <option value="gti">Sea-Doo GTI 130</option>
@@ -108,100 +176,259 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <option value="boat">Boat</option>
 </select></div>
 <div class="fg"><label>Status</label><div class="spk">
-<div class="so" data-s="available" onclick="ps('available')"><span class="ico">&#9989;</span>Available</div>
-<div class="so" data-s="down" onclick="ps('down')"><span class="ico">&#128308;</span>Down</div>
+<div class="so" id="so-available" onclick="ps('available')"><span class="ic">&#9989;</span>Available</div>
+<div class="so" id="so-down" onclick="ps('down')"><span class="ic">&#128308;</span>Down</div>
 </div></div>
-<div class="fg"><label>Notes</label><textarea id="fnotes" placeholder="e.g. Hull damage, needs impeller..."></textarea></div>
+<div class="fg"><label>Notes</label><textarea id="fnotes" placeholder="Current issues, damage, notes..."></textarea></div>
 </div>
 <div class="fbtns">
-<button class="fb fsv" onclick="saveM()">Save Machine</button>
-<button class="fb fcn" onclick="closeF()">Cancel</button>
-<button class="fb fdl" id="fdel" onclick="delM()">Remove Machine</button>
-</div></div></div>
+<button class="fb fsv" onclick="saveForm()">Save Machine</button>
+<button class="fb fcn" onclick="closeForm()">Cancel</button>
+<button class="fb fdl" id="fdelBtn" onclick="delMachine()">&#128465; Remove Machine</button>
+</div>
+</div></div>
+
 <div class="toast" id="toast"></div>
+
 <script>
-const KEY='fcr_v5';
-const CL={gti:'GTI 130',t3:'Spark 3UP',t2:'Spark 2UP',boat:'Boat'};
-const SEED=[
-{id:1,name:'Sea-Doo GTI 130',mid:'1',yr:'2022',cat:'gti',status:'available',notes:''},
-{id:2,name:'Sea-Doo GTI 130',mid:'2',yr:'2022',cat:'gti',status:'available',notes:''},
-{id:3,name:'Sea-Doo GTI 130',mid:'4',yr:'2022',cat:'gti',status:'available',notes:''},
-{id:4,name:'Sea-Doo GTI 130',mid:'6',yr:'2025',cat:'gti',status:'available',notes:''},
-{id:5,name:'Sea-Doo GTI 130',mid:'7',yr:'2025',cat:'gti',status:'available',notes:''},
-{id:6,name:'Sea-Doo GTI 130',mid:'8',yr:'2025',cat:'gti',status:'available',notes:''},
-{id:7,name:'Sea-Doo GTI 130',mid:'11',yr:'2022',cat:'gti',status:'available',notes:''},
-{id:8,name:'Sea-Doo GTI 130',mid:'12',yr:'2025',cat:'gti',status:'available',notes:''},
-{id:9,name:'Sea-Doo GTI 130',mid:'13',yr:'2022',cat:'gti',status:'available',notes:''},
-{id:10,name:'Sea-Doo GTI 130',mid:'14',yr:'2024',cat:'gti',status:'available',notes:''},
-{id:11,name:'Sea-Doo GTI 130',mid:'15',yr:'2024',cat:'gti',status:'available',notes:''},
-{id:12,name:'Sea-Doo GTI 130',mid:'16',yr:'2022',cat:'gti',status:'available',notes:''},
-{id:13,name:'Sea-Doo GTI 130',mid:'17',yr:'2023',cat:'gti',status:'available',notes:''},
-{id:14,name:'Sea-Doo GTI 130',mid:'18',yr:'2025',cat:'gti',status:'available',notes:''},
-{id:15,name:'Sea-Doo GTI 130',mid:'19',yr:'2023',cat:'gti',status:'available',notes:''},
-{id:16,name:'Sea-Doo GTI 130',mid:'20',yr:'2023',cat:'gti',status:'available',notes:''},
-{id:17,name:'Sea-Doo GTI 130',mid:'21',yr:'2023',cat:'gti',status:'available',notes:''},
-{id:18,name:'Sea-Doo GTI 130',mid:'22',yr:'2024',cat:'gti',status:'available',notes:''},
-{id:19,name:'Sea-Doo GTI 130',mid:'23',yr:'2024',cat:'gti',status:'available',notes:''},
-{id:20,name:'Sea-Doo GTI 130',mid:'24',yr:'2024',cat:'gti',status:'available',notes:''},
-{id:21,name:'Sea-Doo GTI 130',mid:'25',yr:'2024',cat:'gti',status:'available',notes:''},
-{id:22,name:'Sea-Doo GTI 130',mid:'26',yr:'2024',cat:'gti',status:'available',notes:''},
-{id:23,name:'Sea-Doo GTI 130',mid:'27',yr:'2023',cat:'gti',status:'available',notes:''},
-{id:24,name:'Sea-Doo GTI 130',mid:'28',yr:'2022',cat:'gti',status:'available',notes:''},
-{id:25,name:'Sea-Doo GTI 130',mid:'29',yr:'2024',cat:'gti',status:'available',notes:''},
-{id:26,name:'Sea-Doo GTI 130',mid:'33',yr:'2021',cat:'gti',status:'available',notes:''},
-{id:27,name:'Sea-Doo GTI 130',mid:'37',yr:'2021',cat:'gti',status:'available',notes:''},
-{id:28,name:'Sea-Doo GTI 130',mid:'38',yr:'2025',cat:'gti',status:'available',notes:''},
-{id:29,name:'Sea-Doo GTI 130',mid:'39',yr:'2025',cat:'gti',status:'available',notes:''},
-{id:30,name:'Sea-Doo GTI 130',mid:'40',yr:'2023',cat:'gti',status:'available',notes:''},
-{id:31,name:'Sea-Doo Spark Trixx 3UP',mid:'5',yr:'2024',cat:'t3',status:'available',notes:''},
-{id:32,name:'Sea-Doo Spark Trixx 3UP',mid:'9',yr:'2022',cat:'t3',status:'available',notes:''},
-{id:33,name:'Sea-Doo Spark Trixx 3UP',mid:'10',yr:'2022',cat:'t3',status:'available',notes:''},
-{id:34,name:'Sea-Doo Spark Trixx 3UP',mid:'30',yr:'2025',cat:'t3',status:'available',notes:''},
-{id:35,name:'Sea-Doo Spark Trixx 3UP',mid:'31',yr:'2025',cat:'t3',status:'available',notes:''},
-{id:36,name:'Sea-Doo Spark Trixx 3UP',mid:'32',yr:'2024',cat:'t3',status:'available',notes:''},
-{id:37,name:'Sea-Doo Spark Trixx 3UP',mid:'34',yr:'2024',cat:'t3',status:'available',notes:''},
-{id:38,name:'Sea-Doo Spark Trixx 3UP',mid:'35',yr:'2024',cat:'t3',status:'available',notes:''},
-{id:39,name:'Sea-Doo Spark Trixx 3UP',mid:'41',yr:'2023',cat:'t3',status:'available',notes:''},
-{id:40,name:'Sea-Doo Spark Trixx 3UP',mid:'42',yr:'2023',cat:'t3',status:'available',notes:''},
-{id:41,name:'Sea-Doo Spark Trixx 2UP',mid:'A',yr:'2023',cat:'t2',status:'available',notes:''},
-{id:42,name:'Sea-Doo Spark Trixx 2UP',mid:'B',yr:'2023',cat:'t2',status:'available',notes:''},
-{id:43,name:'Sea-Doo Spark Trixx 2UP',mid:'J',yr:'2022',cat:'t2',status:'available',notes:''},
-{id:44,name:'MB B52 23ft Surf Boat',mid:'46',yr:'2022',cat:'boat',status:'available',notes:''},
-{id:45,name:'MB B52 23ft Surf Boat',mid:'47',yr:'2024',cat:'boat',status:'available',notes:''}
+var KEY = "fcr_v7";
+var CL = {gti:"GTI 130", t3:"Spark 3UP", t2:"Spark 2UP", boat:"Boat"};
+var SEED = [
+  {id:1,name:"Sea-Doo GTI 130",mid:"1",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
+  {id:2,name:"Sea-Doo GTI 130",mid:"2",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
+  {id:3,name:"Sea-Doo GTI 130",mid:"4",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
+  {id:4,name:"Sea-Doo GTI 130",mid:"6",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
+  {id:5,name:"Sea-Doo GTI 130",mid:"7",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
+  {id:6,name:"Sea-Doo GTI 130",mid:"8",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
+  {id:7,name:"Sea-Doo GTI 130",mid:"11",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
+  {id:8,name:"Sea-Doo GTI 130",mid:"12",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
+  {id:9,name:"Sea-Doo GTI 130",mid:"13",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
+  {id:10,name:"Sea-Doo GTI 130",mid:"14",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
+  {id:11,name:"Sea-Doo GTI 130",mid:"15",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
+  {id:12,name:"Sea-Doo GTI 130",mid:"16",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
+  {id:13,name:"Sea-Doo GTI 130",mid:"17",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
+  {id:14,name:"Sea-Doo GTI 130",mid:"18",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
+  {id:15,name:"Sea-Doo GTI 130",mid:"19",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
+  {id:16,name:"Sea-Doo GTI 130",mid:"20",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
+  {id:17,name:"Sea-Doo GTI 130",mid:"21",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
+  {id:18,name:"Sea-Doo GTI 130",mid:"22",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
+  {id:19,name:"Sea-Doo GTI 130",mid:"23",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
+  {id:20,name:"Sea-Doo GTI 130",mid:"24",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
+  {id:21,name:"Sea-Doo GTI 130",mid:"25",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
+  {id:22,name:"Sea-Doo GTI 130",mid:"26",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
+  {id:23,name:"Sea-Doo GTI 130",mid:"27",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
+  {id:24,name:"Sea-Doo GTI 130",mid:"28",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
+  {id:25,name:"Sea-Doo GTI 130",mid:"29",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
+  {id:26,name:"Sea-Doo GTI 130",mid:"33",yr:"2021",cat:"gti",status:"available",notes:"",history:[]},
+  {id:27,name:"Sea-Doo GTI 130",mid:"37",yr:"2021",cat:"gti",status:"available",notes:"",history:[]},
+  {id:28,name:"Sea-Doo GTI 130",mid:"38",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
+  {id:29,name:"Sea-Doo GTI 130",mid:"39",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
+  {id:30,name:"Sea-Doo GTI 130",mid:"40",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
+  {id:31,name:"Sea-Doo Spark Trixx 3UP",mid:"5",yr:"2024",cat:"t3",status:"available",notes:"",history:[]},
+  {id:32,name:"Sea-Doo Spark Trixx 3UP",mid:"9",yr:"2022",cat:"t3",status:"available",notes:"",history:[]},
+  {id:33,name:"Sea-Doo Spark Trixx 3UP",mid:"10",yr:"2022",cat:"t3",status:"available",notes:"",history:[]},
+  {id:34,name:"Sea-Doo Spark Trixx 3UP",mid:"30",yr:"2025",cat:"t3",status:"available",notes:"",history:[]},
+  {id:35,name:"Sea-Doo Spark Trixx 3UP",mid:"31",yr:"2025",cat:"t3",status:"available",notes:"",history:[]},
+  {id:36,name:"Sea-Doo Spark Trixx 3UP",mid:"32",yr:"2024",cat:"t3",status:"available",notes:"",history:[]},
+  {id:37,name:"Sea-Doo Spark Trixx 3UP",mid:"34",yr:"2024",cat:"t3",status:"available",notes:"",history:[]},
+  {id:38,name:"Sea-Doo Spark Trixx 3UP",mid:"35",yr:"2024",cat:"t3",status:"available",notes:"",history:[]},
+  {id:39,name:"Sea-Doo Spark Trixx 3UP",mid:"41",yr:"2023",cat:"t3",status:"available",notes:"",history:[]},
+  {id:40,name:"Sea-Doo Spark Trixx 3UP",mid:"42",yr:"2023",cat:"t3",status:"available",notes:"",history:[]},
+  {id:41,name:"Sea-Doo Spark Trixx 2UP",mid:"A",yr:"2023",cat:"t2",status:"available",notes:"",history:[]},
+  {id:42,name:"Sea-Doo Spark Trixx 2UP",mid:"B",yr:"2023",cat:"t2",status:"available",notes:"",history:[]},
+  {id:43,name:"Sea-Doo Spark Trixx 2UP",mid:"J",yr:"2022",cat:"t2",status:"available",notes:"",history:[]},
+  {id:44,name:"MB B52 23ft Surf Boat",mid:"46",yr:"2022",cat:"boat",status:"available",notes:"",history:[]},
+  {id:45,name:"MB B52 23ft Surf Boat",mid:"47",yr:"2024",cat:"boat",status:"available",notes:"",history:[]}
 ];
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY));return s&&s.length?s:JSON.parse(JSON.stringify(SEED));}catch{return JSON.parse(JSON.stringify(SEED));}}
-function save(d){localStorage.setItem(KEY,JSON.stringify(d));}
-let M=load(),fst='all',fcat='all',pst='available';
-function sf(s){fst=s;document.querySelectorAll('.stab').forEach(e=>e.className='stab');const m={all:'aa',available:'av',down:'dn'};document.getElementById('st-'+s).classList.add(m[s]);render();}
-function sc(c){fcat=c;document.querySelectorAll('.ct').forEach(e=>e.classList.remove('on'));document.getElementById('ct-'+c).classList.add('on');render();}
-function setS(id,s,e){e.stopPropagation();const m=M.find(x=>x.id===id);if(!m||m.status===s)return;m.status=s;save(M);render();toast((s==='available'?'Available':'Down')+': #'+m.mid+' '+m.name);}
-function render(){
-const q=document.getElementById('srch').value.toLowerCase();
-const el=document.getElementById('lst');
-const f=M.filter(m=>{
-const fs=fst==='all'||m.status===fst;
-const fc=fcat==='all'||m.cat===fcat;
-const fq=!q||m.name.toLowerCase().includes(q)||m.mid.toLowerCase().includes(q)||(m.notes||'').toLowerCase().includes(q);
-return fs&&fc&&fq;
-});
-document.getElementById('c-all').textContent=M.length;
-document.getElementById('c-available').textContent=M.filter(m=>m.status==='available').length;
-document.getElementById('c-down').textContent=M.filter(m=>m.status==='down').length;
-if(!f.length){el.innerHTML='<div class="empty"><div style="font-size:52px;margin-bottom:12px">&#128269;</div><p>No machines found</p></div>';return;}
-el.innerHTML=f.map(m=>{
-const ia=m.status==='available';
-const nt=m.notes?'<div class="note">'+m.notes+'</div>':'';
-return '<div class="card '+m.status+'"><div class="mname">'+m.name+' - #'+m.mid+'</div><div class="msub">'+(m.yr?m.yr+' - ':'')+CL[m.cat]+'</div>'+nt+'<div class="stog"><div class="tb '+(ia?'oa':'')+'" onclick="setS('+m.id+','available',event)">&#9989; Available</div><div class="tb '+(!ia?'od':'')+'" onclick="setS('+m.id+','down',event)">&#128308; Down</div></div><div class="cbtns"><button class="cbtn" onclick="openF('+m.id+')">Edit/Notes</button><button class="cbtn d" onclick="rm('+m.id+',event)">Remove</button></div></div>';
-}).join('');
+
+function load(){try{var s=JSON.parse(localStorage.getItem(KEY));return(s&&s.length)?s:JSON.parse(JSON.stringify(SEED));}catch(e){return JSON.parse(JSON.stringify(SEED));}}
+function store(d){localStorage.setItem(KEY,JSON.stringify(d));}
+function today(){return new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});}
+
+var M=load(), fst="all", fcat="all", pst="available", curId=null, svcType="service";
+
+function sf(s){
+  fst=s;
+  ["all","available","down"].forEach(function(x){
+    var el=document.getElementById("st-"+x);
+    if(el){el.className="stab"+(s===x?(" "+(x==="all"?"aa":x==="available"?"av":"dn")):"");}
+  });
+  ["all","available","down"].forEach(function(x){
+    var el=document.getElementById("bn-"+x);
+    if(el){el.className="ni"+(s===x?" on":"");}
+  });
+  render();
 }
-function openF(id){const m=id?M.find(x=>x.id===id):null;document.getElementById('ftitle').textContent=m?'Edit Machine':'Add Machine';document.getElementById('fid').value=m?m.id:'';document.getElementById('fname').value=m?m.name:'';document.getElementById('fmid').value=m?m.mid:'';document.getElementById('fyr').value=m?m.yr:'';document.getElementById('fcat').value=m?m.cat:'gti';document.getElementById('fnotes').value=m?m.notes:'';document.getElementById('fdel').style.display=m?'block':'none';ps(m?m.status:'available');document.getElementById('ov').classList.add('open');}
-function ps(s){pst=s;document.querySelectorAll('.so').forEach(e=>{e.className='so';if(e.dataset.s===s)e.classList.add('s'+s[0])});}
-function saveM(){const n=document.getElementById('fname').value.trim();if(!n){alert('Enter machine name');return;}const eid=document.getElementById('fid').value;const m={id:eid?parseInt(eid):Date.now(),name:n,mid:document.getElementById('fmid').value.trim()||'-',yr:document.getElementById('fyr').value.trim(),cat:document.getElementById('fcat').value,status:pst,notes:document.getElementById('fnotes').value.trim()};if(eid){const i=M.findIndex(x=>x.id===parseInt(eid));if(i!==-1)M[i]=m;}else{M.push(m);}save(M);closeF();render();toast(eid?'Updated':'Added');}
-function delM(){const id=parseInt(document.getElementById('fid').value);if(!confirm('Remove this machine?'))return;M=M.filter(x=>x.id!==id);save(M);closeF();render();toast('Removed');}
-function rm(id,e){e.stopPropagation();if(!confirm('Remove?'))return;M=M.filter(x=>x.id!==id);save(M);render();toast('Removed');}
-function closeF(){document.getElementById('ov').classList.remove('open');}
-document.getElementById('ov').addEventListener('click',e=>{if(e.target===document.getElementById('ov'))closeF();});
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function sc(c){
+  fcat=c;
+  document.querySelectorAll(".ct").forEach(function(e){e.classList.remove("on");});
+  document.getElementById("ct-"+c).classList.add("on");
+  render();
+}
+function setS(id,s){
+  var m=M.find(function(x){return x.id===id;});
+  if(!m||m.status===s)return;
+  m.history=m.history||[];
+  m.history.unshift({date:today(),type:"status",note:"Status changed to "+s});
+  m.status=s;
+  store(M);
+  render();
+  toast((s==="available"?"Available":"Down")+": #"+m.mid);
+}
+function render(){
+  var q=document.getElementById("srch").value.toLowerCase();
+  var el=document.getElementById("lst");
+  var f=M.filter(function(m){
+    return (fst==="all"||m.status===fst)&&(fcat==="all"||m.cat===fcat)&&(!q||m.name.toLowerCase().indexOf(q)>=0||m.mid.toLowerCase().indexOf(q)>=0||(m.notes||"").toLowerCase().indexOf(q)>=0);
+  });
+  document.getElementById("c-all").textContent=M.length;
+  document.getElementById("c-av").textContent=M.filter(function(m){return m.status==="available";}).length;
+  document.getElementById("c-dn").textContent=M.filter(function(m){return m.status==="down";}).length;
+  if(!f.length){el.innerHTML="<div class='empty'><div style='font-size:48px;margin-bottom:12px'>&#128269;</div><p>No machines found</p></div>";return;}
+  el.innerHTML=f.map(function(m){
+    var ia=m.status==="available";
+    var hc=(m.history&&m.history.length)?" &middot; "+m.history.length+" record"+(m.history.length>1?"s":""):"";
+    var nt=m.notes?"<div class='nt'>&#128221; "+m.notes+"</div>":"";
+    return "<div class='card "+m.status+"'>"
+      +"<div style='display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px'>"
+      +"<div style='cursor:pointer' onclick='openHist("+m.id+")'>"
+      +"<div class='mn'>"+m.name+" &mdash; #"+m.mid+"</div>"
+      +"<div class='ms'>"+(m.yr?m.yr+" &middot; ":"")+CL[m.cat]+hc+"</div>"
+      +"</div>"
+      +"<div style='font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;background:"+(ia?"var(--gbg)":"var(--rbg)")+";color:"+(ia?"var(--gt)":"var(--rt)")+";flex-shrink:0;margin-left:8px'>"
+      +(ia?"&#9989; Available":"&#128308; Down")+"</div></div>"
+      +nt
+      +"<div class='tog'>"
+      +"<div class='tb"+(ia?" oa":"")+"' onclick='setS("+m.id+",\"available\")'>&#9989; Available</div>"
+      +"<div class='tb"+(!ia?" od":"")+"' onclick='setS("+m.id+",\"down\")'>&#128308; Down</div>"
+      +"</div>"
+      +"<div class='cbtns'>"
+      +"<button class='cb' onclick='openHist("+m.id+")'>&#128203; History</button>"
+      +"<button class='cb' onclick='openForm("+m.id+")'>&#9998; Edit</button>"
+      +"</div></div>";
+  }).join("");
+}
+
+function openForm(id){
+  var m=id?M.find(function(x){return x.id===id;}):null;
+  curId=id||null;
+  document.getElementById("formTitle").textContent=m?"Edit Machine":"Add Machine";
+  document.getElementById("fid").value=m?m.id:"";
+  document.getElementById("fname").value=m?m.name:"";
+  document.getElementById("fmid").value=m?m.mid:"";
+  document.getElementById("fyr").value=m?m.yr:"";
+  document.getElementById("fcat").value=m?m.cat:"gti";
+  document.getElementById("fnotes").value=m?m.notes:"";
+  document.getElementById("fdelBtn").style.display=m?"block":"none";
+  ps(m?m.status:"available");
+  document.getElementById("formOv").classList.add("open");
+}
+function closeForm(){document.getElementById("formOv").classList.remove("open");}
+function ps(s){
+  pst=s;
+  ["available","down"].forEach(function(x){
+    var el=document.getElementById("so-"+x);
+    el.className="so"+(s===x?(" s"+(x==="available"?"a":"d")):"");
+  });
+}
+function saveForm(){
+  var n=document.getElementById("fname").value.trim();
+  if(!n){alert("Enter machine name");return;}
+  var eid=document.getElementById("fid").value;
+  var obj={id:eid?parseInt(eid):Date.now(),name:n,mid:document.getElementById("fmid").value.trim()||"-",yr:document.getElementById("fyr").value.trim(),cat:document.getElementById("fcat").value,status:pst,notes:document.getElementById("fnotes").value.trim()};
+  if(eid){
+    var i=M.findIndex(function(x){return x.id===parseInt(eid);});
+    if(i!==-1){obj.history=M[i].history||[];M[i]=obj;}
+  }else{
+    obj.history=[];M.push(obj);
+  }
+  store(M);closeForm();render();toast(eid?"Updated":"Added");
+}
+function delMachine(){
+  if(!confirm("Remove this machine?"))return;
+  var eid=parseInt(document.getElementById("fid").value);
+  M=M.filter(function(x){return x.id!==eid;});
+  store(M);closeForm();render();
+  if(document.getElementById("histView").style.display!=="none")showFleet();
+  toast("Removed");
+}
+
+function openHist(id){
+  var m=M.find(function(x){return x.id===id;});
+  if(!m)return;
+  curId=id;
+  document.getElementById("hTitle").textContent=m.name+" \u2014 #"+m.mid;
+  document.getElementById("hSub").textContent=(m.yr?m.yr+" \u00b7 ":"")+CL[m.cat];
+  var ia=m.status==="available";
+  document.getElementById("histTog").innerHTML=
+    "<div class='tb"+(ia?" oa":"")+"' onclick='setS("+m.id+",\"available\");refreshHist()'>&#9989; Available</div>"
+    +"<div class='tb"+(!ia?" od":"")+"' onclick='setS("+m.id+",\"down\");refreshHist()'>&#128308; Down</div>";
+  document.getElementById("histNoteBox").innerHTML=m.notes?"<div class='nt' style='margin-bottom:0'>&#128221; "+m.notes+"</div>":"";
+  document.getElementById("svcDate").value=today();
+  document.getElementById("svcNote").value="";
+  document.getElementById("svcForm").style.display="none";
+  document.getElementById("addSvcBtn").style.display="block";
+  renderHist(m);
+  document.getElementById("fleetView").style.display="none";
+  document.getElementById("histView").style.display="block";
+  window.scrollTo(0,0);
+}
+function refreshHist(){
+  var m=M.find(function(x){return x.id===curId;});
+  if(!m)return;
+  var ia=m.status==="available";
+  document.getElementById("histTog").innerHTML=
+    "<div class='tb"+(ia?" oa":"")+"' onclick='setS("+m.id+",\"available\");refreshHist()'>&#9989; Available</div>"
+    +"<div class='tb"+(!ia?" od":"")+"' onclick='setS("+m.id+",\"down\");refreshHist()'>&#128308; Down</div>";
+  renderHist(m);
+}
+function renderHist(m){
+  var h=m.history||[];
+  if(!h.length){document.getElementById("histList").innerHTML="<div style='text-align:center;padding:30px 0;color:var(--gray);font-size:14px'>No service history yet</div>";return;}
+  document.getElementById("histList").innerHTML=h.map(function(e){
+    var tc=e.type==="service"?"ht-service":e.type==="repair"?"ht-repair":e.type==="status"?"ht-status":"ht-note";
+    var ti=e.type==="service"?"&#128295; Service":e.type==="repair"?"&#128296; Repair":e.type==="status"?"&#128260; Status":"&#128221; Note";
+    return "<div class='hentry'><div class='hdate'>&#128197; "+e.date+"</div><span class='htype "+tc+"'>"+ti+"</span><div class='hnote'>"+e.note+"</div></div>";
+  }).join("");
+}
+function showFleet(){
+  document.getElementById("histView").style.display="none";
+  document.getElementById("fleetView").style.display="block";
+  window.scrollTo(0,0);
+}
+function editFromHist(){openForm(curId);}
+function toggleSvcForm(){
+  var f=document.getElementById("svcForm");
+  var b=document.getElementById("addSvcBtn");
+  if(f.style.display==="none"){f.style.display="block";b.style.display="none";document.getElementById("svcDate").value=today();document.getElementById("svcNote").value="";}
+  else{f.style.display="none";b.style.display="block";}
+}
+function setSvcType(t){
+  svcType=t;
+  ["service","repair","note"].forEach(function(x){
+    document.getElementById("sbt-"+x).className="svcbt"+(t===x?" on":"");
+  });
+}
+function saveSvcEntry(){
+  var note=document.getElementById("svcNote").value.trim();
+  if(!note){alert("Enter a note");return;}
+  var entry={date:document.getElementById("svcDate").value||today(),type:svcType,note:note};
+  var m=M.find(function(x){return x.id===curId;});
+  if(!m)return;
+  m.history=m.history||[];
+  m.history.unshift(entry);
+  store(M);
+  toggleSvcForm();
+  renderHist(m);
+  toast("Entry saved");
+}
+function toast(msg){
+  var t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(function(){t.classList.remove("show");},2200);
+}
+
+document.getElementById("formOv").addEventListener("click",function(e){if(e.target===document.getElementById("formOv"))closeForm();});
 render();
 </script>
 </body>
