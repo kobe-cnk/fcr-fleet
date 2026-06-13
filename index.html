@@ -115,7 +115,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <div class="stab" id="st-down" onclick="sf('down')"><div class="sn r" id="c-dn">0</div><div class="sl2">Down</div></div>
 <div class="stab" id="st-sold" onclick="sf('sold')"><div class="sn p" id="c-sl">0</div><div class="sl2">Sold</div></div>
 </div>
-<div class="ivbar"><div><div class="ivlbl">Fleet Market Value</div><div class="ivval" id="ivval">--</div></div><div style="text-align:right"><div class="ivlbl">Stale (&gt;90d)</div><div class="ivstale" id="ivstale">--</div></div></div></div>
+<div class="ivbar"><div><div class="ivlbl">Ex-Rental Resale Value</div><div class="ivval" id="ivval">--</div></div><div style="text-align:right"><div class="ivlbl">Stale (&gt;90d)</div><div class="ivstale" id="ivstale">--</div></div></div></div>
 <div class="sw"><input id="srch" placeholder="Search name, ID, notes..." oninput="render()" autocomplete="off"></div>
 <div class="ctabs" id="ctabs"></div>
 <div class="lst" id="lst"></div>
@@ -183,7 +183,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <div class="fg"><label>Machine ID</label><input id="fmid" placeholder="14, A, 46" autocomplete="off"></div>
 <div class="fg"><label>Year</label><input id="fyr" placeholder="2023" autocomplete="off" type="number"></div>
 </div>
-<div class="fg"><label>Fair Market Value</label><input id="ffmv" placeholder="$8,000" autocomplete="off" oninput="fmtFMV(this)" inputmode="numeric"></div>
+<div class="fg"><label>Ex-Rental Resale Value</label><input id="ffmv" placeholder="$8,000" autocomplete="off" oninput="fmtFMV(this)" inputmode="numeric"></div>
 <div class="fg"><label>Category</label><select id="fcat">
 <option value="gti">Sea-Doo GTI 130</option>
 <option value="t3">Sea-Doo Spark Trixx 3UP</option>
@@ -426,7 +426,7 @@ function render(){
     var stale=false;
     if(m.fmvDate){var d=new Date(m.fmvDate);stale=(new Date()-d)/(1000*60*60*24)>90;}
     else{stale=true;}
-    return "<div style='font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;background:#FFF8E1;color:#F57F17;margin-bottom:8px;display:inline-block'>"+(stale?"&#9888; ":"")+"FMV: "+m.fmv+(stale?" (update needed)":"")+"</div>";
+    return "<div style='font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;background:#FFF8E1;color:#F57F17;margin-bottom:8px;display:inline-block'>"+(stale?"&#9888; ":"")+"Resale: "+m.fmv+(stale?" (update needed)":"")+"</div>";
   }():"";
   var soldInfo=isSold&&m.soldDate?"<div class='nt' style='background:var(--soldbg);color:var(--sold)'>&#128176; Sold "+(m.soldDate||"")+(m.soldPrice?" \u00b7 "+m.soldPrice:"")+(m.soldBuyer?" \u00b7 "+m.soldBuyer:"")+"</div>":"";
     var btns=isSold
