@@ -19,6 +19,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 .stab.aa{border-bottom-color:#fff}.stab.av{border-bottom-color:#69F0AE}.stab.dn{border-bottom-color:#FF5252}.stab.sl{border-bottom-color:#CE93D8}
 .sn{font-size:20px;font-weight:800;color:#fff}.sn.g{color:#69F0AE}.sn.r{color:#FF5252}.sn.p{color:#CE93D8}
 .sl2{font-size:9px;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.6);margin-top:2px}
+.ivbar{background:var(--n);padding:10px 20px;display:flex;justify-content:space-between;align-items:center}
+.ivbar .ivlbl{color:rgba(255,255,255,.6);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.ivbar .ivval{color:var(--g);font-size:20px;font-weight:800}
+.ivbar .ivstale{color:#FF8A80;font-size:10px;font-weight:600}
 .sw{padding:12px 16px;background:#fff;border-bottom:1px solid var(--br)}
 .sw input{width:100%;padding:11px 16px;border:1.5px solid var(--br);border-radius:24px;font-size:15px;background:var(--li);outline:none;color:var(--n)}
 .ctabs{display:flex;gap:8px;padding:10px 16px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--br);scrollbar-width:none}
@@ -110,7 +114,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <div class="stab" id="st-available" onclick="sf('available')"><div class="sn g" id="c-av">0</div><div class="sl2">Available</div></div>
 <div class="stab" id="st-down" onclick="sf('down')"><div class="sn r" id="c-dn">0</div><div class="sl2">Down</div></div>
 <div class="stab" id="st-sold" onclick="sf('sold')"><div class="sn p" id="c-sl">0</div><div class="sl2">Sold</div></div>
-</div></div>
+</div>
+<div class="ivbar"><div><div class="ivlbl">Fleet Market Value</div><div class="ivval" id="ivval">--</div></div><div style="text-align:right"><div class="ivlbl">Stale (&gt;90d)</div><div class="ivstale" id="ivstale">--</div></div></div></div>
 <div class="sw"><input id="srch" placeholder="Search name, ID, notes..." oninput="render()" autocomplete="off"></div>
 <div class="ctabs" id="ctabs"></div>
 <div class="lst" id="lst"></div>
@@ -178,6 +183,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <div class="fg"><label>Machine ID</label><input id="fmid" placeholder="14, A, 46" autocomplete="off"></div>
 <div class="fg"><label>Year</label><input id="fyr" placeholder="2023" autocomplete="off" type="number"></div>
 </div>
+<div class="fg"><label>Fair Market Value</label><input id="ffmv" placeholder="$8,000" autocomplete="off" oninput="fmtFMV(this)" inputmode="numeric"></div>
 <div class="fg"><label>Category</label><select id="fcat">
 <option value="gti">Sea-Doo GTI 130</option>
 <option value="t3">Sea-Doo Spark Trixx 3UP</option>
@@ -407,6 +413,7 @@ function render(){
   document.getElementById("c-dn").textContent=M.filter(function(m){return m.status==="down";}).length;
   document.getElementById("c-sl").textContent=M.filter(function(m){return m.status==="sold";}).length;
   renderCatTabs();
+  updateIV();
   if(!f.length){el.innerHTML="<div class='empty'><div style='font-size:48px;margin-bottom:12px'>&#128269;</div><p>No machines found</p></div>";return;}
   el.innerHTML=f.map(function(m){
     var ia=m.status==="available",isSold=m.status==="sold";
@@ -415,7 +422,13 @@ function render(){
     var statusBadge=ia?"&#9989; Available":isSold?"&#128176; Sold":"&#128308; Down";
     var badgeBg=ia?"var(--gbg)":isSold?"var(--soldbg)":"var(--rbg)";
     var badgeColor=ia?"var(--gt)":isSold?"var(--sold)":"var(--rt)";
-    var soldInfo=isSold&&m.soldDate?"<div class='nt' style='background:var(--soldbg);color:var(--sold)'>&#128176; Sold "+(m.soldDate||"")+(m.soldPrice?" \u00b7 "+m.soldPrice:"")+(m.soldBuyer?" \u00b7 "+m.soldBuyer:"")+"</div>":"";
+    var fmvBadge=(!isSold&&m.fmv)?function(){
+    var stale=false;
+    if(m.fmvDate){var d=new Date(m.fmvDate);stale=(new Date()-d)/(1000*60*60*24)>90;}
+    else{stale=true;}
+    return "<div style='font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;background:#FFF8E1;color:#F57F17;margin-bottom:8px;display:inline-block'>"+(stale?"&#9888; ":"")+"FMV: "+m.fmv+(stale?" (update needed)":"")+"</div>";
+  }():"";
+  var soldInfo=isSold&&m.soldDate?"<div class='nt' style='background:var(--soldbg);color:var(--sold)'>&#128176; Sold "+(m.soldDate||"")+(m.soldPrice?" \u00b7 "+m.soldPrice:"")+(m.soldBuyer?" \u00b7 "+m.soldBuyer:"")+"</div>":"";
     var btns=isSold
       ?"<div class='tog'><div class='tb' onclick='reactivate("+m.id+")' style='grid-column:1/-1'>&#9989; Reactivate</div></div>"
       :"<div class='tog'><div class='tb"+(ia?" oa":"")+"' onclick='tapAv("+m.id+")'>&#9989; Available</div><div class='tb"+(!ia?" od":"")+"' onclick='tapDn("+m.id+")'>&#128308; Down</div></div>";
@@ -426,7 +439,7 @@ function render(){
       +"<div class='ms'>"+(m.yr?m.yr+" \u00b7 ":"")+CATS[m.cat]+hc+"</div>"
       +"</div>"
       +"<div style='font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;background:"+badgeBg+";color:"+badgeColor+";flex-shrink:0;margin-left:8px'>"+statusBadge+"</div>"
-      +"</div>"+nt+soldInfo+btns
+      +"</div>"+nt+fmvBadge+soldInfo+btns
       +"<div class='cbtns'><button class='cb' onclick='openHist("+m.id+")'>&#128203; History</button><button class='cb' onclick='openForm("+m.id+")'>&#9998; Edit</button></div>"
       +"</div>";
   }).join("");
@@ -459,6 +472,7 @@ function openForm(id){
   document.getElementById("fcat").value=m?m.cat:"gti";
   document.getElementById("fnotes").value=m?m.notes:"";
   document.getElementById("fprice").value=m?m.price||"":"";
+  document.getElementById("ffmv").value=m?m.fmv||"":"";
   document.getElementById("facq").value=m?m.acq||"":today();
   document.getElementById("fdelBtn").style.display=m?"block":"none";
   document.getElementById("fsellBtn").style.display=(m&&m.status!=="sold")?"block":"none";
@@ -484,11 +498,13 @@ function saveForm(){
     status:"available",
     notes:document.getElementById("fnotes").value.trim(),
     price:document.getElementById("fprice").value.trim(),
+    fmv:document.getElementById("ffmv").value.trim(),
+    fmvDate:document.getElementById("ffmv").value.trim()?today():"",
     acq:acq
   };
   if(eid){
     var i=M.findIndex(function(x){return x.id===parseInt(eid);});
-    if(i!==-1){obj.history=M[i].history||[];obj.status=M[i].status;obj.soldDate=M[i].soldDate;obj.soldPrice=M[i].soldPrice;obj.soldBuyer=M[i].soldBuyer;M[i]=obj;}
+    if(i!==-1){obj.history=M[i].history||[];obj.status=M[i].status;obj.soldDate=M[i].soldDate;obj.soldPrice=M[i].soldPrice;obj.soldBuyer=M[i].soldBuyer;if(obj.fmv&&obj.fmv===M[i].fmv){obj.fmvDate=M[i].fmvDate;}M[i]=obj;}
   } else {
     obj.history=[{date:acq,type:"ac",note:"Acquired"+(obj.price?" for "+obj.price:"")}];
     M.push(obj);
@@ -570,6 +586,29 @@ function onNameSel(){
     var map={"Sea-Doo GTI 130":"gti","Sea-Doo Spark Trixx 3UP":"t3","Sea-Doo Spark Trixx 2UP":"t2","MB B52 23ft Surf Boat":"boat"};
     if(map[sel.value]) cat.value=map[sel.value];
   }
+}
+function fmtFMV(el){
+  var raw=el.value.replace(/[^0-9]/g,"");
+  if(raw===""){el.value="";return;}
+  el.value="$"+parseInt(raw,10).toLocaleString("en-US");
+}
+function updateIV(){
+  var active=M.filter(function(m){return m.status!=="sold";});
+  var total=0,stale=0,now=new Date();
+  active.forEach(function(m){
+    if(m.fmv){
+      var v=parseInt((m.fmv||"").replace(/[^0-9]/g,""));
+      if(!isNaN(v))total+=v;
+      if(m.fmvDate){
+        var d=new Date(m.fmvDate);
+        if((now-d)/(1000*60*60*24)>90)stale++;
+      } else { stale++; }
+    }
+  });
+  var ivval=document.getElementById("ivval");
+  var ivstale=document.getElementById("ivstale");
+  if(ivval)ivval.textContent=total>0?"$"+total.toLocaleString("en-US"):"--";
+  if(ivstale)ivstale.textContent=stale>0?stale+" units":"None";
 }
 function fmtPrice(el){
   var raw=el.value.replace(/[^0-9]/g,"");
