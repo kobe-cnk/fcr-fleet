@@ -7,24 +7,20 @@
 <title>FCR Fleet Manager</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--n:#0D1B2A;--b:#1565C0;--g:#F5A623;--gbg:#E8F5E9;--gt:#2E7D32;--rbg:#FFEBEE;--rt:#C62828;--gray:#546E7A;--li:#F4F6F8;--br:#E0E6ED}
+:root{--n:#0D1B2A;--b:#1565C0;--g:#F5A623;--gbg:#E8F5E9;--gt:#2E7D32;--rbg:#FFEBEE;--rt:#C62828;--gray:#546E7A;--li:#F4F6F8;--br:#E0E6ED;--sold:#7B1FA2;--soldbg:#F3E5F5}
 body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li);color:var(--n);min-height:100vh;padding-bottom:90px}
-/* HEADER */
 .hdr{background:var(--n);padding:16px 20px 0;position:sticky;top:0;z-index:100}
 .htop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .htop h1{color:#fff;font-size:22px;font-weight:800}
 .htop h1 span{color:var(--g)}
 .addbtn{background:var(--g);color:var(--n);border:none;border-radius:50%;width:44px;height:44px;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-/* STAT TABS */
-.stabs{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid rgba(255,255,255,.1)}
-.stab{padding:12px 8px 14px;text-align:center;cursor:pointer;border-bottom:3px solid transparent}
-.stab.aa{border-bottom-color:#fff}.stab.av{border-bottom-color:#69F0AE}.stab.dn{border-bottom-color:#FF5252}
-.sn{font-size:24px;font-weight:800;color:#fff}.sn.g{color:#69F0AE}.sn.r{color:#FF5252}
-.sl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.6);margin-top:2px}
-/* SEARCH */
+.stabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-top:1px solid rgba(255,255,255,.1)}
+.stab{padding:10px 4px 13px;text-align:center;cursor:pointer;border-bottom:3px solid transparent}
+.stab.aa{border-bottom-color:#fff}.stab.av{border-bottom-color:#69F0AE}.stab.dn{border-bottom-color:#FF5252}.stab.sl{border-bottom-color:#CE93D8}
+.sn{font-size:20px;font-weight:800;color:#fff}.sn.g{color:#69F0AE}.sn.r{color:#FF5252}.sn.p{color:#CE93D8}
+.sl2{font-size:9px;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.6);margin-top:2px}
 .sw{padding:12px 16px;background:#fff;border-bottom:1px solid var(--br)}
 .sw input{width:100%;padding:11px 16px;border:1.5px solid var(--br);border-radius:24px;font-size:15px;background:var(--li);outline:none;color:var(--n)}
-/* CAT TABS */
 .ctabs{display:flex;gap:8px;padding:10px 16px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--br);scrollbar-width:none}
 .ctabs::-webkit-scrollbar{display:none}
 .ct{flex-shrink:0;padding:6px 12px;border-radius:20px;border:1.5px solid var(--br);font-size:12px;font-weight:600;cursor:pointer;background:#fff;color:var(--gray);display:flex;flex-direction:column;align-items:center;gap:2px}
@@ -32,22 +28,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 .ct-counts{font-size:10px;font-weight:700;display:flex;gap:4px}
 .ct-av{color:var(--gt)}.ct-dn{color:var(--rt)}
 .ct.on .ct-av{color:#69F0AE}.ct.on .ct-dn{color:#FF8A80}
-/* LIST */
 .lst{padding:12px 16px;display:flex;flex-direction:column;gap:10px}
-/* CARD */
 .card{background:#fff;border-radius:14px;padding:14px 16px 12px;box-shadow:0 1px 6px rgba(0,0,0,.07);border-left:5px solid transparent}
-.card.available{border-left-color:var(--gt)}.card.down{border-left-color:var(--rt)}
+.card.available{border-left-color:var(--gt)}.card.down{border-left-color:var(--rt)}.card.sold{border-left-color:var(--sold);opacity:.85}
 .mn{font-size:16px;font-weight:700;color:var(--n)}
 .ms{font-size:12px;color:var(--gray);margin-bottom:8px}
 .nt{font-size:12px;color:var(--gray);background:var(--li);border-radius:8px;padding:7px 10px;line-height:1.4;margin-bottom:8px}
 .tog{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.tog3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
 .tb{padding:11px 8px;border-radius:10px;border:2px solid var(--br);font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:var(--gray);text-align:center}
 .tb.oa{background:var(--gbg);color:var(--gt);border-color:var(--gt)}
 .tb.od{background:var(--rbg);color:var(--rt);border-color:var(--rt)}
+.tb.os{background:var(--soldbg);color:var(--sold);border-color:var(--sold)}
 .cbtns{display:flex;gap:8px;padding-top:8px;border-top:1px solid var(--br)}
 .cb{flex:1;padding:8px;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;background:var(--li);color:var(--n)}
 .empty{text-align:center;padding:60px 20px;color:var(--gray)}
-/* OVERLAYS */
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;justify-content:center}
 .ov.open{display:flex}
 .sh{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;padding-bottom:40px}
@@ -59,7 +54,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 .fg{margin-bottom:16px}
 .fg label{display:block;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
 .fg input,.fg select,.fg textarea{width:100%;padding:12px 14px;border:1.5px solid var(--br);border-radius:10px;font-size:15px;color:var(--n);background:#fff;outline:none;font-family:inherit;-webkit-appearance:none}
-.fg textarea{height:90px;resize:none;line-height:1.5}
+.fg textarea{height:80px;resize:none;line-height:1.5}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .spk{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .so{padding:14px;border-radius:12px;border:2px solid var(--br);text-align:center;cursor:pointer;font-size:14px;font-weight:700;color:var(--gray)}
@@ -70,13 +65,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 .fb{padding:15px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer}
 .fsv{background:var(--n);color:#fff}.fcn{background:var(--li);color:var(--n)}
 .fdl{background:var(--rbg);color:var(--rt);display:none}
-/* DOWN FORM */
-.down-sheet .shdr{background:var(--rbg)}
-.down-sheet .sttl{color:var(--rt)}
+.fsl{background:var(--soldbg);color:var(--sold);display:none}
+.down-sheet .shdr{background:var(--rbg)}.down-sheet .sttl{color:var(--rt)}
+.sell-sheet .shdr{background:var(--soldbg)}.sell-sheet .sttl{color:var(--sold)}
 .rgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
 .rbtn{padding:11px 8px;border-radius:10px;border:1.5px solid var(--br);font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:var(--gray);text-align:center;line-height:1.3}
 .rbtn.on{border-color:var(--rt);background:var(--rbg);color:var(--rt)}
-/* HISTORY */
 .hpage{padding:16px}
 .hback{background:var(--n);padding:16px 20px;display:flex;align-items:center;gap:12px}
 .hback button{background:none;border:none;color:#fff;font-size:20px;cursor:pointer}
@@ -93,11 +87,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 .htype{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-bottom:4px}
 .ht-s{background:#FFF3E0;color:#E65100}.ht-r{background:var(--rbg);color:var(--rt)}
 .ht-n{background:var(--li);color:var(--gray)}.ht-st{background:#E3F2FD;color:var(--b)}
-.ht-d{background:var(--rbg);color:var(--rt)}
+.ht-d{background:var(--rbg);color:var(--rt)}.ht-ac{background:#E8F5E9;color:var(--gt)}
+.ht-sl{background:var(--soldbg);color:var(--sold)}
 .hnote{font-size:13px;color:var(--n);line-height:1.4}
 .divider{height:1px;background:var(--br);margin:16px 0}
 .srow{display:flex;gap:8px}
-/* BOTTOM NAV */
+.sold-banner{background:var(--soldbg);border:1.5px solid var(--sold);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--sold);font-weight:600}
 .bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--br);display:flex;padding:8px 0 20px;z-index:100}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--gray);cursor:pointer;padding:4px}
 .ni.on{color:var(--b)}.nico{font-size:22px}
@@ -107,14 +102,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 </head>
 <body>
 
-<!-- FLEET VIEW -->
 <div id="fleetView">
 <div class="hdr">
 <div class="htop"><h1>FCR <span>Fleet</span></h1><button class="addbtn" onclick="openForm()">+</button></div>
 <div class="stabs">
-<div class="stab aa" id="st-all" onclick="sf('all')"><div class="sn" id="c-all">0</div><div class="sl">All Units</div></div>
-<div class="stab" id="st-available" onclick="sf('available')"><div class="sn g" id="c-av">0</div><div class="sl">Available</div></div>
-<div class="stab" id="st-down" onclick="sf('down')"><div class="sn r" id="c-dn">0</div><div class="sl">Down</div></div>
+<div class="stab aa" id="st-all" onclick="sf('all')"><div class="sn" id="c-all">0</div><div class="sl2">All</div></div>
+<div class="stab" id="st-available" onclick="sf('available')"><div class="sn g" id="c-av">0</div><div class="sl2">Available</div></div>
+<div class="stab" id="st-down" onclick="sf('down')"><div class="sn r" id="c-dn">0</div><div class="sl2">Down</div></div>
+<div class="stab" id="st-sold" onclick="sf('sold')"><div class="sn p" id="c-sl">0</div><div class="sl2">Sold</div></div>
 </div></div>
 <div class="sw"><input id="srch" placeholder="Search name, ID, notes..." oninput="render()" autocomplete="off"></div>
 <div class="ctabs" id="ctabs"></div>
@@ -123,11 +118,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <div class="ni on" id="bn-all" onclick="sf('all')"><span class="nico">&#128676;</span><span>All</span></div>
 <div class="ni" id="bn-available" onclick="sf('available')"><span class="nico">&#9989;</span><span>Available</span></div>
 <div class="ni" id="bn-down" onclick="sf('down')"><span class="nico">&#128308;</span><span>Down</span></div>
+<div class="ni" id="bn-sold" onclick="sf('sold')"><span class="nico">&#128176;</span><span>Sold</span></div>
 <div class="ni" onclick="openForm()"><span class="nico">&#10133;</span><span>Add</span></div>
 </div>
 </div>
 
-<!-- HISTORY VIEW -->
 <div id="histView" style="display:none">
 <div class="hback">
 <button onclick="showFleet()">&#8592;</button>
@@ -135,6 +130,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <button class="hedit" onclick="editFromHist()">&#9998; Edit</button>
 </div>
 <div class="hpage">
+<div id="soldBanner"></div>
 <div class="tog" id="histTog"></div>
 <div id="histNoteBox"></div>
 <div class="divider"></div>
@@ -166,8 +162,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <input type="hidden" id="fid">
 <div class="fg"><label>Machine Name *</label><input id="fname" placeholder="Sea-Doo GTI 130" autocomplete="off"></div>
 <div class="two">
-<div class="fg"><label>Machine ID</label><input id="fmid" placeholder="14, T3, A" autocomplete="off"></div>
-<div class="fg"><label>Year</label><input id="fyr" placeholder="2023" autocomplete="off"></div>
+<div class="fg"><label>Machine ID</label><input id="fmid" placeholder="14, A, 46" autocomplete="off"></div>
+<div class="fg"><label>Year</label><input id="fyr" placeholder="2023" autocomplete="off" type="number"></div>
+</div>
+<div class="two">
+<div class="fg"><label>Purchase Price</label><input id="fprice" placeholder="$12,000" autocomplete="off"></div>
+<div class="fg"><label>Date Acquired</label><input id="facq" autocomplete="off"></div>
 </div>
 <div class="fg"><label>Category</label><select id="fcat">
 <option value="gti">Sea-Doo GTI 130</option>
@@ -175,20 +175,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <option value="t2">Sea-Doo Spark Trixx 2UP</option>
 <option value="boat">Boat</option>
 </select></div>
-<div class="fg"><label>Status</label><div class="spk">
-<div class="so" id="so-available" onclick="ps('available')"><span class="ic">&#9989;</span>Available</div>
-<div class="so" id="so-down" onclick="ps('down')"><span class="ic">&#128308;</span>Down</div>
-</div></div>
 <div class="fg"><label>Notes</label><textarea id="fnotes" placeholder="Current issues, damage, notes..."></textarea></div>
 </div>
 <div class="fbtns">
 <button class="fb fsv" onclick="saveForm()">Save Machine</button>
 <button class="fb fcn" onclick="closeForm()">Cancel</button>
+<button class="fb fsl" id="fsellBtn" onclick="openSell()">&#128176; Sell Machine</button>
 <button class="fb fdl" id="fdelBtn" onclick="delMachine()">&#128465; Remove Machine</button>
 </div>
 </div></div>
 
-<!-- DOWN REASON FORM -->
+<!-- DOWN FORM -->
 <div class="ov" id="downOv">
 <div class="sh down-sheet">
 <div class="hdl"></div>
@@ -215,88 +212,103 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 </div>
 </div></div>
 
+<!-- SELL FORM -->
+<div class="ov" id="sellOv">
+<div class="sh sell-sheet">
+<div class="hdl"></div>
+<div class="shdr"><div class="sttl">&#128176; Sell Machine</div><button class="xcl" onclick="closeSell()">&#x2715;</button></div>
+<div class="frm">
+<div class="fg"><label>Machine</label><div id="sellName" style="font-size:16px;font-weight:700;color:var(--n);padding:6px 0"></div></div>
+<div class="fg"><label>Sale Price</label><input id="sellPrice" placeholder="$15,000" autocomplete="off"></div>
+<div class="fg"><label>Buyer (optional)</label><input id="sellBuyer" placeholder="Name or company" autocomplete="off"></div>
+<div class="fg"><label>Date Sold</label><input id="sellDate"></div>
+<div class="fg"><label>Notes (optional)</label><textarea id="sellNote" placeholder="Any notes about the sale..."></textarea></div>
+</div>
+<div class="fbtns">
+<button class="fb" style="background:var(--sold);color:#fff" onclick="confirmSell()">&#128176; Confirm Sale</button>
+<button class="fb fcn" onclick="closeSell()">Cancel</button>
+</div>
+</div></div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-var KEY="fcr_v8";
+var KEY="fcr_v9";
 var CATS={gti:"GTI 130",t3:"Spark 3UP",t2:"Spark 2UP",boat:"Boat"};
-var CATKEYS=["all","gti","t3","t2","boat"];
 var SEED=[
-{id:1,name:"Sea-Doo GTI 130",mid:"1",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
-{id:2,name:"Sea-Doo GTI 130",mid:"2",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
-{id:3,name:"Sea-Doo GTI 130",mid:"4",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
-{id:4,name:"Sea-Doo GTI 130",mid:"6",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
-{id:5,name:"Sea-Doo GTI 130",mid:"7",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
-{id:6,name:"Sea-Doo GTI 130",mid:"8",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
-{id:7,name:"Sea-Doo GTI 130",mid:"11",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
-{id:8,name:"Sea-Doo GTI 130",mid:"12",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
-{id:9,name:"Sea-Doo GTI 130",mid:"13",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
-{id:10,name:"Sea-Doo GTI 130",mid:"14",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
-{id:11,name:"Sea-Doo GTI 130",mid:"15",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
-{id:12,name:"Sea-Doo GTI 130",mid:"16",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
-{id:13,name:"Sea-Doo GTI 130",mid:"17",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
-{id:14,name:"Sea-Doo GTI 130",mid:"18",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
-{id:15,name:"Sea-Doo GTI 130",mid:"19",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
-{id:16,name:"Sea-Doo GTI 130",mid:"20",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
-{id:17,name:"Sea-Doo GTI 130",mid:"21",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
-{id:18,name:"Sea-Doo GTI 130",mid:"22",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
-{id:19,name:"Sea-Doo GTI 130",mid:"23",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
-{id:20,name:"Sea-Doo GTI 130",mid:"24",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
-{id:21,name:"Sea-Doo GTI 130",mid:"25",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
-{id:22,name:"Sea-Doo GTI 130",mid:"26",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
-{id:23,name:"Sea-Doo GTI 130",mid:"27",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
-{id:24,name:"Sea-Doo GTI 130",mid:"28",yr:"2022",cat:"gti",status:"available",notes:"",history:[]},
-{id:25,name:"Sea-Doo GTI 130",mid:"29",yr:"2024",cat:"gti",status:"available",notes:"",history:[]},
-{id:26,name:"Sea-Doo GTI 130",mid:"33",yr:"2021",cat:"gti",status:"available",notes:"",history:[]},
-{id:27,name:"Sea-Doo GTI 130",mid:"37",yr:"2021",cat:"gti",status:"available",notes:"",history:[]},
-{id:28,name:"Sea-Doo GTI 130",mid:"38",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
-{id:29,name:"Sea-Doo GTI 130",mid:"39",yr:"2025",cat:"gti",status:"available",notes:"",history:[]},
-{id:30,name:"Sea-Doo GTI 130",mid:"40",yr:"2023",cat:"gti",status:"available",notes:"",history:[]},
-{id:31,name:"Sea-Doo Spark Trixx 3UP",mid:"5",yr:"2024",cat:"t3",status:"available",notes:"",history:[]},
-{id:32,name:"Sea-Doo Spark Trixx 3UP",mid:"9",yr:"2022",cat:"t3",status:"available",notes:"",history:[]},
-{id:33,name:"Sea-Doo Spark Trixx 3UP",mid:"10",yr:"2022",cat:"t3",status:"available",notes:"",history:[]},
-{id:34,name:"Sea-Doo Spark Trixx 3UP",mid:"30",yr:"2025",cat:"t3",status:"available",notes:"",history:[]},
-{id:35,name:"Sea-Doo Spark Trixx 3UP",mid:"31",yr:"2025",cat:"t3",status:"available",notes:"",history:[]},
-{id:36,name:"Sea-Doo Spark Trixx 3UP",mid:"32",yr:"2024",cat:"t3",status:"available",notes:"",history:[]},
-{id:37,name:"Sea-Doo Spark Trixx 3UP",mid:"34",yr:"2024",cat:"t3",status:"available",notes:"",history:[]},
-{id:38,name:"Sea-Doo Spark Trixx 3UP",mid:"35",yr:"2024",cat:"t3",status:"available",notes:"",history:[]},
-{id:39,name:"Sea-Doo Spark Trixx 3UP",mid:"41",yr:"2023",cat:"t3",status:"available",notes:"",history:[]},
-{id:40,name:"Sea-Doo Spark Trixx 3UP",mid:"42",yr:"2023",cat:"t3",status:"available",notes:"",history:[]},
-{id:41,name:"Sea-Doo Spark Trixx 2UP",mid:"A",yr:"2023",cat:"t2",status:"available",notes:"",history:[]},
-{id:42,name:"Sea-Doo Spark Trixx 2UP",mid:"B",yr:"2023",cat:"t2",status:"available",notes:"",history:[]},
-{id:43,name:"Sea-Doo Spark Trixx 2UP",mid:"J",yr:"2022",cat:"t2",status:"available",notes:"",history:[]},
-{id:44,name:"MB B52 23ft Surf Boat",mid:"46",yr:"2022",cat:"boat",status:"available",notes:"",history:[]},
-{id:45,name:"MB B52 23ft Surf Boat",mid:"47",yr:"2024",cat:"boat",status:"available",notes:"",history:[]}
+{id:1,name:"Sea-Doo GTI 130",mid:"1",yr:"2022",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:2,name:"Sea-Doo GTI 130",mid:"2",yr:"2022",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:3,name:"Sea-Doo GTI 130",mid:"4",yr:"2022",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:4,name:"Sea-Doo GTI 130",mid:"6",yr:"2025",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:5,name:"Sea-Doo GTI 130",mid:"7",yr:"2025",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:6,name:"Sea-Doo GTI 130",mid:"8",yr:"2025",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:7,name:"Sea-Doo GTI 130",mid:"11",yr:"2022",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:8,name:"Sea-Doo GTI 130",mid:"12",yr:"2025",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:9,name:"Sea-Doo GTI 130",mid:"13",yr:"2022",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:10,name:"Sea-Doo GTI 130",mid:"14",yr:"2024",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:11,name:"Sea-Doo GTI 130",mid:"15",yr:"2024",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:12,name:"Sea-Doo GTI 130",mid:"16",yr:"2022",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:13,name:"Sea-Doo GTI 130",mid:"17",yr:"2023",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:14,name:"Sea-Doo GTI 130",mid:"18",yr:"2025",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:15,name:"Sea-Doo GTI 130",mid:"19",yr:"2023",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:16,name:"Sea-Doo GTI 130",mid:"20",yr:"2023",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:17,name:"Sea-Doo GTI 130",mid:"21",yr:"2023",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:18,name:"Sea-Doo GTI 130",mid:"22",yr:"2024",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:19,name:"Sea-Doo GTI 130",mid:"23",yr:"2024",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:20,name:"Sea-Doo GTI 130",mid:"24",yr:"2024",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:21,name:"Sea-Doo GTI 130",mid:"25",yr:"2024",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:22,name:"Sea-Doo GTI 130",mid:"26",yr:"2024",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:23,name:"Sea-Doo GTI 130",mid:"27",yr:"2023",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:24,name:"Sea-Doo GTI 130",mid:"28",yr:"2022",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:25,name:"Sea-Doo GTI 130",mid:"29",yr:"2024",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:26,name:"Sea-Doo GTI 130",mid:"33",yr:"2021",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:27,name:"Sea-Doo GTI 130",mid:"37",yr:"2021",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:28,name:"Sea-Doo GTI 130",mid:"38",yr:"2025",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:29,name:"Sea-Doo GTI 130",mid:"39",yr:"2025",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:30,name:"Sea-Doo GTI 130",mid:"40",yr:"2023",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:31,name:"Sea-Doo Spark Trixx 3UP",mid:"5",yr:"2024",cat:"t3",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:32,name:"Sea-Doo Spark Trixx 3UP",mid:"9",yr:"2022",cat:"t3",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:33,name:"Sea-Doo Spark Trixx 3UP",mid:"10",yr:"2022",cat:"t3",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:34,name:"Sea-Doo Spark Trixx 3UP",mid:"30",yr:"2025",cat:"t3",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:35,name:"Sea-Doo Spark Trixx 3UP",mid:"31",yr:"2025",cat:"t3",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:36,name:"Sea-Doo Spark Trixx 3UP",mid:"32",yr:"2024",cat:"t3",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:37,name:"Sea-Doo Spark Trixx 3UP",mid:"34",yr:"2024",cat:"t3",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:38,name:"Sea-Doo Spark Trixx 3UP",mid:"35",yr:"2024",cat:"t3",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:39,name:"Sea-Doo Spark Trixx 3UP",mid:"41",yr:"2023",cat:"t3",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:40,name:"Sea-Doo Spark Trixx 3UP",mid:"42",yr:"2023",cat:"t3",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:41,name:"Sea-Doo Spark Trixx 2UP",mid:"A",yr:"2023",cat:"t2",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:42,name:"Sea-Doo Spark Trixx 2UP",mid:"B",yr:"2023",cat:"t2",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:43,name:"Sea-Doo Spark Trixx 2UP",mid:"J",yr:"2022",cat:"t2",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:44,name:"MB B52 23ft Surf Boat",mid:"46",yr:"2022",cat:"boat",status:"available",notes:"",price:"",acq:"",history:[]},
+{id:45,name:"MB B52 23ft Surf Boat",mid:"47",yr:"2024",cat:"boat",status:"available",notes:"",price:"",acq:"",history:[]}
 ];
 
 function load(){try{var s=JSON.parse(localStorage.getItem(KEY));return(s&&s.length)?s:JSON.parse(JSON.stringify(SEED));}catch(e){return JSON.parse(JSON.stringify(SEED));}}
 function store(d){localStorage.setItem(KEY,JSON.stringify(d));}
 function today(){return new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});}
 
-var M=load(),fst="all",fcat="all",pst="available",curId=null,svcT="s",downId=null,pickedR=null;
+var M=load(),fst="all",fcat="all",curId=null,svcT="s",downId=null,pickedR=null,sellId=null;
 
-/* ---- FILTERS ---- */
 function sf(s){
   fst=s;
-  ["all","available","down"].forEach(function(x){
-    var e=document.getElementById("st-"+x);if(e)e.className="stab"+(s===x?" "+(x==="all"?"aa":x==="available"?"av":"dn"):"");
-    var b=document.getElementById("bn-"+x);if(b)b.className="ni"+(s===x?" on":"");
+  ["all","available","down","sold"].forEach(function(x){
+    var e=document.getElementById("st-"+x);
+    if(e)e.className="stab"+(s===x?" "+(x==="all"?"aa":x==="available"?"av":x==="down"?"dn":"sl"):"");
+    var b=document.getElementById("bn-"+x);
+    if(b)b.className="ni"+(s===x?" on":"");
   });
   render();
 }
-function sc(c){
-  fcat=c;
-  renderCatTabs();
-  render();
-}
 
-/* ---- CAT TAB COUNTS ---- */
+function sc(c){fcat=c;renderCatTabs();render();}
+
 function renderCatTabs(){
   var el=document.getElementById("ctabs");
   var tabs=[{k:"all",lbl:"All"}].concat(Object.keys(CATS).map(function(k){return{k:k,lbl:CATS[k]};}));
+  var active=M.filter(function(m){return m.status!=="sold";});
   el.innerHTML=tabs.map(function(t){
-    var av=t.k==="all"?M.filter(function(m){return m.status==="available";}).length:M.filter(function(m){return m.cat===t.k&&m.status==="available";}).length;
-    var dn=t.k==="all"?M.filter(function(m){return m.status==="down";}).length:M.filter(function(m){return m.cat===t.k&&m.status==="down";}).length;
+    var av=t.k==="all"?active.filter(function(m){return m.status==="available";}).length:active.filter(function(m){return m.cat===t.k&&m.status==="available";}).length;
+    var dn=t.k==="all"?active.filter(function(m){return m.status==="down";}).length:active.filter(function(m){return m.cat===t.k&&m.status==="down";}).length;
     return "<div class='ct"+(fcat===t.k?" on":"")+"' onclick='sc(\""+t.k+"\")'>"
       +"<span>"+t.lbl+"</span>"
       +"<span class='ct-counts'><span class='ct-av'>"+av+"&#9989;</span><span class='ct-dn'>"+dn+"&#128308;</span></span>"
@@ -304,10 +316,9 @@ function renderCatTabs(){
   }).join("");
 }
 
-/* ---- MARK AVAILABLE (instant) ---- */
 function tapAv(id){
   var m=M.find(function(x){return x.id===id;});
-  if(!m||m.status==="available")return;
+  if(!m||m.status==="available"||m.status==="sold")return;
   m.history=m.history||[];
   m.history.unshift({date:today(),type:"st",note:"Marked available"});
   m.status="available";
@@ -316,10 +327,9 @@ function tapAv(id){
   toast("Available: #"+m.mid);
 }
 
-/* ---- MARK DOWN (opens form) ---- */
 function tapDn(id){
   var m=M.find(function(x){return x.id===id;});
-  if(!m||m.status==="down")return;
+  if(!m||m.status==="down"||m.status==="sold")return;
   downId=id;pickedR=null;
   document.getElementById("downName").textContent=m.name+" \u2014 #"+m.mid;
   document.getElementById("downNote").value="";
@@ -329,13 +339,11 @@ function tapDn(id){
 }
 function pickR(el){
   document.querySelectorAll(".rbtn").forEach(function(e){e.classList.remove("on");});
-  el.classList.add("on");
-  pickedR=el.textContent.trim();
+  el.classList.add("on");pickedR=el.textContent.trim();
 }
 function closeDown(){document.getElementById("downOv").classList.remove("open");downId=null;}
 function confirmDown(){
-  var m=M.find(function(x){return x.id===downId;});
-  if(!m)return;
+  var m=M.find(function(x){return x.id===downId;});if(!m)return;
   var reason=pickedR||"Down";
   var details=document.getElementById("downNote").value.trim();
   var note=reason+(details?" \u2014 "+details:"");
@@ -347,40 +355,82 @@ function confirmDown(){
   toast("Down: #"+m.mid+" \u2014 "+reason);
 }
 
-/* ---- RENDER FLEET ---- */
+function openSell(){
+  var eid=document.getElementById("fid").value;
+  if(!eid)return;
+  sellId=parseInt(eid);
+  var m=M.find(function(x){return x.id===sellId;});
+  if(!m)return;
+  closeForm();
+  document.getElementById("sellName").textContent=m.name+" \u2014 #"+m.mid;
+  document.getElementById("sellPrice").value="";
+  document.getElementById("sellBuyer").value="";
+  document.getElementById("sellDate").value=today();
+  document.getElementById("sellNote").value="";
+  document.getElementById("sellOv").classList.add("open");
+}
+function closeSell(){document.getElementById("sellOv").classList.remove("open");sellId=null;}
+function confirmSell(){
+  var m=M.find(function(x){return x.id===sellId;});if(!m)return;
+  var price=document.getElementById("sellPrice").value.trim();
+  var buyer=document.getElementById("sellBuyer").value.trim();
+  var date=document.getElementById("sellDate").value||today();
+  var note2=document.getElementById("sellNote").value.trim();
+  var note="Sold"+(price?" for "+price:"")+(buyer?" to "+buyer:"")+(note2?" \u2014 "+note2:"");
+  m.history=m.history||[];
+  m.history.unshift({date:date,type:"sl",note:note});
+  m.status="sold";
+  m.soldDate=date;m.soldPrice=price;m.soldBuyer=buyer;
+  store(M);closeSell();render();
+  if(document.getElementById("histView").style.display!=="none")refreshHist();
+  toast("Sold: #"+m.mid);
+}
+
 function render(){
   var q=document.getElementById("srch").value.toLowerCase();
   var el=document.getElementById("lst");
   var f=M.filter(function(m){
-    return(fst==="all"||m.status===fst)&&(fcat==="all"||m.cat===fcat)&&(!q||m.name.toLowerCase().indexOf(q)>=0||m.mid.toLowerCase().indexOf(q)>=0||(m.notes||"").toLowerCase().indexOf(q)>=0);
+    return(fst==="all"?m.status!=="sold":m.status===fst)&&(fcat==="all"||m.cat===fcat)&&(!q||m.name.toLowerCase().indexOf(q)>=0||m.mid.toLowerCase().indexOf(q)>=0||(m.notes||"").toLowerCase().indexOf(q)>=0);
   });
-  document.getElementById("c-all").textContent=M.length;
+  var active=M.filter(function(m){return m.status!=="sold";});
+  document.getElementById("c-all").textContent=active.length;
   document.getElementById("c-av").textContent=M.filter(function(m){return m.status==="available";}).length;
   document.getElementById("c-dn").textContent=M.filter(function(m){return m.status==="down";}).length;
+  document.getElementById("c-sl").textContent=M.filter(function(m){return m.status==="sold";}).length;
   renderCatTabs();
   if(!f.length){el.innerHTML="<div class='empty'><div style='font-size:48px;margin-bottom:12px'>&#128269;</div><p>No machines found</p></div>";return;}
   el.innerHTML=f.map(function(m){
-    var ia=m.status==="available";
+    var ia=m.status==="available",isSold=m.status==="sold";
     var hc=(m.history&&m.history.length)?" \u00b7 "+m.history.length+" record"+(m.history.length>1?"s":""):"";
     var nt=m.notes?"<div class='nt'>&#128221; "+m.notes+"</div>":"";
+    var statusBadge=ia?"&#9989; Available":isSold?"&#128176; Sold":"&#128308; Down";
+    var badgeBg=ia?"var(--gbg)":isSold?"var(--soldbg)":"var(--rbg)";
+    var badgeColor=ia?"var(--gt)":isSold?"var(--sold)":"var(--rt)";
+    var soldInfo=isSold&&m.soldDate?"<div class='nt' style='background:var(--soldbg);color:var(--sold)'>&#128176; Sold "+(m.soldDate||"")+(m.soldPrice?" \u00b7 "+m.soldPrice:"")+(m.soldBuyer?" \u00b7 "+m.soldBuyer:"")+"</div>":"";
+    var btns=isSold
+      ?"<div class='tog'><div class='tb' onclick='reactivate("+m.id+")' style='grid-column:1/-1'>&#9989; Reactivate</div></div>"
+      :"<div class='tog'><div class='tb"+(ia?" oa":"")+"' onclick='tapAv("+m.id+")'>&#9989; Available</div><div class='tb"+(!ia?" od":"")+"' onclick='tapDn("+m.id+")'>&#128308; Down</div></div>";
     return "<div class='card "+m.status+"'>"
       +"<div style='display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px'>"
       +"<div style='cursor:pointer' onclick='openHist("+m.id+")'>"
       +"<div class='mn'>"+m.name+" \u2014 #"+m.mid+"</div>"
       +"<div class='ms'>"+(m.yr?m.yr+" \u00b7 ":"")+CATS[m.cat]+hc+"</div>"
       +"</div>"
-      +"<div style='font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;background:"+(ia?"var(--gbg)":"var(--rbg)")+";color:"+(ia?"var(--gt)":"var(--rt)")+";flex-shrink:0;margin-left:8px'>"+(ia?"&#9989; Available":"&#128308; Down")+"</div>"
-      +"</div>"+nt
-      +"<div class='tog'>"
-      +"<div class='tb"+(ia?" oa":"")+"' onclick='tapAv("+m.id+")'>&#9989; Available</div>"
-      +"<div class='tb"+(!ia?" od":"")+"' onclick='tapDn("+m.id+")'>&#128308; Down</div>"
-      +"</div>"
+      +"<div style='font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;background:"+badgeBg+";color:"+badgeColor+";flex-shrink:0;margin-left:8px'>"+statusBadge+"</div>"
+      +"</div>"+nt+soldInfo+btns
       +"<div class='cbtns'><button class='cb' onclick='openHist("+m.id+")'>&#128203; History</button><button class='cb' onclick='openForm("+m.id+")'>&#9998; Edit</button></div>"
       +"</div>";
   }).join("");
 }
 
-/* ---- FORM ---- */
+function reactivate(id){
+  var m=M.find(function(x){return x.id===id;});if(!m)return;
+  m.history=m.history||[];
+  m.history.unshift({date:today(),type:"st",note:"Reactivated to fleet"});
+  m.status="available";delete m.soldDate;delete m.soldPrice;delete m.soldBuyer;
+  store(M);render();toast("Reactivated: #"+m.mid);
+}
+
 function openForm(id){
   var m=id?M.find(function(x){return x.id===id;}):null;
   curId=id||null;
@@ -391,25 +441,37 @@ function openForm(id){
   document.getElementById("fyr").value=m?m.yr:"";
   document.getElementById("fcat").value=m?m.cat:"gti";
   document.getElementById("fnotes").value=m?m.notes:"";
+  document.getElementById("fprice").value=m?m.price||"":"";
+  document.getElementById("facq").value=m?m.acq||"":today();
   document.getElementById("fdelBtn").style.display=m?"block":"none";
-  ps(m?m.status:"available");
+  document.getElementById("fsellBtn").style.display=(m&&m.status!=="sold")?"block":"none";
   document.getElementById("formOv").classList.add("open");
 }
 function closeForm(){document.getElementById("formOv").classList.remove("open");}
-function ps(s){
-  pst=s;
-  ["available","down"].forEach(function(x){
-    var e=document.getElementById("so-"+x);
-    e.className="so"+(s===x?" s"+(x==="available"?"a":"d"):"");
-  });
-}
 function saveForm(){
   var n=document.getElementById("fname").value.trim();
   if(!n){alert("Enter machine name");return;}
   var eid=document.getElementById("fid").value;
-  var obj={id:eid?parseInt(eid):Date.now(),name:n,mid:document.getElementById("fmid").value.trim()||"-",yr:document.getElementById("fyr").value.trim(),cat:document.getElementById("fcat").value,status:pst,notes:document.getElementById("fnotes").value.trim()};
-  if(eid){var i=M.findIndex(function(x){return x.id===parseInt(eid);});if(i!==-1){obj.history=M[i].history||[];M[i]=obj;}}
-  else{obj.history=[];M.push(obj);}
+  var isNew=!eid;
+  var acq=document.getElementById("facq").value||today();
+  var obj={
+    id:eid?parseInt(eid):Date.now(),
+    name:n,
+    mid:document.getElementById("fmid").value.trim()||"-",
+    yr:document.getElementById("fyr").value.trim(),
+    cat:document.getElementById("fcat").value,
+    status:"available",
+    notes:document.getElementById("fnotes").value.trim(),
+    price:document.getElementById("fprice").value.trim(),
+    acq:acq
+  };
+  if(eid){
+    var i=M.findIndex(function(x){return x.id===parseInt(eid);});
+    if(i!==-1){obj.history=M[i].history||[];obj.status=M[i].status;obj.soldDate=M[i].soldDate;obj.soldPrice=M[i].soldPrice;obj.soldBuyer=M[i].soldBuyer;M[i]=obj;}
+  } else {
+    obj.history=[{date:acq,type:"ac",note:"Acquired"+(obj.price?" for "+obj.price:"")}];
+    M.push(obj);
+  }
   store(M);closeForm();render();toast(eid?"Updated":"Added");
 }
 function delMachine(){
@@ -421,7 +483,6 @@ function delMachine(){
   toast("Removed");
 }
 
-/* ---- HISTORY ---- */
 function openHist(id){
   var m=M.find(function(x){return x.id===id;});if(!m)return;
   curId=id;
@@ -430,7 +491,7 @@ function openHist(id){
   document.getElementById("svcDate").value=today();
   document.getElementById("svcNote").value="";
   document.getElementById("svcForm").style.display="none";
-  document.getElementById("addSvcBtn").style.display="block";
+  document.getElementById("addSvcBtn").style.display=m.status==="sold"?"none":"block";
   refreshHist();
   document.getElementById("fleetView").style.display="none";
   document.getElementById("histView").style.display="block";
@@ -438,18 +499,25 @@ function openHist(id){
 }
 function refreshHist(){
   var m=M.find(function(x){return x.id===curId;});if(!m)return;
-  var ia=m.status==="available";
-  document.getElementById("histTog").innerHTML=
-    "<div class='tb"+(ia?" oa":"")+"' onclick='tapAv("+m.id+")'>&#9989; Available</div>"
-    +"<div class='tb"+(!ia?" od":"")+"' onclick='tapDn("+m.id+")'>&#128308; Down</div>";
-  document.getElementById("histNoteBox").innerHTML=m.notes?"<div class='nt' style='margin-bottom:0'>&#128221; "+m.notes+"</div>":"";
+  var ia=m.status==="available",isSold=m.status==="sold";
+  var sb=document.getElementById("soldBanner");
+  sb.innerHTML=isSold?"<div class='sold-banner'>&#128176; Sold "+(m.soldDate||"")+(m.soldPrice?" \u00b7 "+m.soldPrice:"")+(m.soldBuyer?" \u00b7 "+m.soldBuyer:"")+"</div>":"";
+  if(!isSold){
+    document.getElementById("histTog").innerHTML=
+      "<div class='tb"+(ia?" oa":"")+"' onclick='tapAv("+m.id+")'>&#9989; Available</div>"
+      +"<div class='tb"+(!ia?" od":"")+"' onclick='tapDn("+m.id+")'>&#128308; Down</div>";
+  } else {
+    document.getElementById("histTog").innerHTML=
+      "<div class='tb' onclick='reactivate("+m.id+")' style='grid-column:1/-1'>&#9989; Reactivate</div>";
+  }
+  document.getElementById("histNoteBox").innerHTML=m.notes?"<div class='nt' style='margin-bottom:8px'>&#128221; "+m.notes+"</div>":"";
   renderHist(m);
 }
 function renderHist(m){
   var h=m.history||[];
-  var map={s:"ht-s",r:"ht-r",n:"ht-n",st:"ht-st",d:"ht-d"};
-  var lbl={s:"&#128295; Service",r:"&#128296; Repair",n:"&#128221; Note",st:"&#128260; Status",d:"&#128308; Down"};
-  if(!h.length){document.getElementById("histList").innerHTML="<div style='text-align:center;padding:30px 0;color:var(--gray);font-size:14px'>No service history yet</div>";return;}
+  var map={s:"ht-s",r:"ht-r",n:"ht-n",st:"ht-st",d:"ht-d",ac:"ht-ac",sl:"ht-sl"};
+  var lbl={s:"&#128295; Service",r:"&#128296; Repair",n:"&#128221; Note",st:"&#128260; Status",d:"&#128308; Down",ac:"&#9989; Acquired",sl:"&#128176; Sold"};
+  if(!h.length){document.getElementById("histList").innerHTML="<div style='text-align:center;padding:30px 0;color:var(--gray);font-size:14px'>No history yet</div>";return;}
   document.getElementById("histList").innerHTML=h.map(function(e){
     return "<div class='hentry'><div class='hdate'>&#128197; "+e.date+"</div><span class='htype "+(map[e.type]||"ht-n")+"'>"+(lbl[e.type]||"Note")+"</span><div class='hnote'>"+e.note+"</div></div>";
   }).join("");
@@ -461,10 +529,7 @@ function toggleSvc(){
   if(f.style.display==="none"){f.style.display="block";b.style.display="none";document.getElementById("svcDate").value=today();document.getElementById("svcNote").value="";}
   else{f.style.display="none";b.style.display="block";}
 }
-function setST(t){
-  svcT=t;
-  ["s","r","n"].forEach(function(x){document.getElementById("sbt-"+x).className="sbt"+(t===x?" on":"");});
-}
+function setST(t){svcT=t;["s","r","n"].forEach(function(x){document.getElementById("sbt-"+x).className="sbt"+(t===x?" on":"");});}
 function saveSvc(){
   var note=document.getElementById("svcNote").value.trim();
   if(!note){alert("Enter a note");return;}
@@ -473,12 +538,11 @@ function saveSvc(){
   m.history.unshift({date:document.getElementById("svcDate").value||today(),type:svcT,note:note});
   store(M);toggleSvc();renderHist(m);toast("Entry saved");
 }
-
-/* ---- TOAST ---- */
 function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(function(){t.classList.remove("show");},2500);}
 
 document.getElementById("formOv").addEventListener("click",function(e){if(e.target===document.getElementById("formOv"))closeForm();});
 document.getElementById("downOv").addEventListener("click",function(e){if(e.target===document.getElementById("downOv"))closeDown();});
+document.getElementById("sellOv").addEventListener("click",function(e){if(e.target===document.getElementById("sellOv"))closeSell();});
 render();
 </script>
 </body>
