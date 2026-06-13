@@ -162,7 +162,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <input type="hidden" id="fid">
 <div class="fg"><label>Machine Name *</label><input id="fname" placeholder="Sea-Doo GTI 130" autocomplete="off"></div>
 <div class="two">
-<div class="fg"><label>Purchase Price</label><input id="fprice" placeholder="$12,000" autocomplete="off"></div>
+<div class="fg"><label>Purchase Price *</label><input id="fprice" placeholder="$12,000" autocomplete="off" oninput="fmtPrice(this)" inputmode="numeric"></div>
 <div class="fg"><label>Date Acquired</label><input id="facq" autocomplete="off"></div>
 </div>
 <div class="two">
@@ -451,6 +451,9 @@ function closeForm(){document.getElementById("formOv").classList.remove("open");
 function saveForm(){
   var n=document.getElementById("fname").value.trim();
   if(!n){alert("Enter machine name");return;}
+  var eid2=document.getElementById("fid").value;
+  var pr=document.getElementById("fprice").value.trim();
+  if(!eid2&&!pr){alert("Enter purchase price");return;}
   var eid=document.getElementById("fid").value;
   var isNew=!eid;
   var acq=document.getElementById("facq").value||today();
@@ -537,6 +540,11 @@ function saveSvc(){
   m.history=m.history||[];
   m.history.unshift({date:document.getElementById("svcDate").value||today(),type:svcT,note:note});
   store(M);toggleSvc();renderHist(m);toast("Entry saved");
+}
+function fmtPrice(el){
+  var raw=el.value.replace(/[^0-9]/g,"");
+  if(raw===""){el.value="";return;}
+  el.value="$"+parseInt(raw,10).toLocaleString("en-US");
 }
 function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(function(){t.classList.remove("show");},2500);}
 
