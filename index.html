@@ -160,7 +160,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <div class="shdr"><div class="sttl" id="formTitle">Add Machine</div><button class="xcl" onclick="closeForm()">&#x2715;</button></div>
 <div class="frm">
 <input type="hidden" id="fid">
-<div class="fg"><label>Machine Name *</label><input id="fname" placeholder="Sea-Doo GTI 130" autocomplete="off"></div>
+<div class="fg"><label>Machine Name *</label>
+<select id="fnamesel" onchange="onNameSel()" style="width:100%;padding:12px 14px;border:1.5px solid var(--br);border-radius:10px;font-size:15px;color:var(--n);background:#fff;outline:none;font-family:inherit;-webkit-appearance:none">
+<option value="">-- Select machine --</option>
+<option value="Sea-Doo GTI 130">Sea-Doo GTI 130</option>
+<option value="Sea-Doo Spark Trixx 3UP">Sea-Doo Spark Trixx 3UP</option>
+<option value="Sea-Doo Spark Trixx 2UP">Sea-Doo Spark Trixx 2UP</option>
+<option value="MB B52 23ft Surf Boat">MB B52 23ft Surf Boat</option>
+<option value="other">Other (custom)</option>
+</select>
+<input id="fname" placeholder="Enter machine name" autocomplete="off" style="display:none;margin-top:8px;width:100%;padding:12px 14px;border:1.5px solid var(--br);border-radius:10px;font-size:15px;color:var(--n);background:#fff;outline:none;font-family:inherit"></div>
 <div class="two">
 <div class="fg"><label>Purchase Price *</label><input id="fprice" placeholder="$12,000" autocomplete="off" oninput="fmtPrice(this)" inputmode="numeric"></div>
 <div class="fg"><label>Date Acquired</label><input id="facq" autocomplete="off"></div>
@@ -436,7 +445,15 @@ function openForm(id){
   curId=id||null;
   document.getElementById("formTitle").textContent=m?"Edit Machine":"Add Machine";
   document.getElementById("fid").value=m?m.id:"";
-  document.getElementById("fname").value=m?m.name:"";
+  var knownNames=["Sea-Doo GTI 130","Sea-Doo Spark Trixx 3UP","Sea-Doo Spark Trixx 2UP","MB B52 23ft Surf Boat"];
+  var sel=document.getElementById("fnamesel");
+  var inp=document.getElementById("fname");
+  if(m){
+    if(knownNames.indexOf(m.name)>=0){sel.value=m.name;inp.style.display="none";inp.value=m.name;}
+    else{sel.value="other";inp.style.display="block";inp.value=m.name;}
+  } else {
+    sel.value="";inp.style.display="none";inp.value="";
+  }
   document.getElementById("fmid").value=m?m.mid:"";
   document.getElementById("fyr").value=m?m.yr:"";
   document.getElementById("fcat").value=m?m.cat:"gti";
@@ -449,7 +466,8 @@ function openForm(id){
 }
 function closeForm(){document.getElementById("formOv").classList.remove("open");}
 function saveForm(){
-  var n=document.getElementById("fname").value.trim();
+  var _sel=document.getElementById("fnamesel");
+  var n=_sel.value==="other"||_sel.value===""?document.getElementById("fname").value.trim():_sel.value;
   if(!n){alert("Enter machine name");return;}
   var eid2=document.getElementById("fid").value;
   var pr=document.getElementById("fprice").value.trim();
@@ -540,6 +558,18 @@ function saveSvc(){
   m.history=m.history||[];
   m.history.unshift({date:document.getElementById("svcDate").value||today(),type:svcT,note:note});
   store(M);toggleSvc();renderHist(m);toast("Entry saved");
+}
+function onNameSel(){
+  var sel=document.getElementById("fnamesel");
+  var inp=document.getElementById("fname");
+  var cat=document.getElementById("fcat");
+  if(sel.value==="other"){
+    inp.style.display="block";inp.value="";inp.focus();
+  } else {
+    inp.style.display="none";inp.value=sel.value;
+    var map={"Sea-Doo GTI 130":"gti","Sea-Doo Spark Trixx 3UP":"t3","Sea-Doo Spark Trixx 2UP":"t2","MB B52 23ft Surf Boat":"boat"};
+    if(map[sel.value]) cat.value=map[sel.value];
+  }
 }
 function fmtPrice(el){
   var raw=el.value.replace(/[^0-9]/g,"");
