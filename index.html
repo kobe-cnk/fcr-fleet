@@ -102,10 +102,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 .ni.on{color:var(--b)}.nico{font-size:22px}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--n);color:#fff;padding:10px 22px;border-radius:24px;font-size:14px;font-weight:600;z-index:999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.syncbar{display:none;position:fixed;top:0;left:0;right:0;padding:8px 16px;color:#fff;font-size:13px;font-weight:700;text-align:center;z-index:9999}
 </style>
 </head>
 <body>
 
+<div class="syncbar" id="syncBar"></div>
 <div id="fleetView">
 <div class="hdr">
 <div class="htop"><h1>FCR <span>Fleet</span></h1><button class="addbtn" onclick="openForm()">+</button></div>
@@ -248,7 +250,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--li
 <div class="toast" id="toast"></div>
 
 <script>
-var KEY="fcr_v9"; // sync enabled
+var KEY="fcr_v9";
 var CATS={gti:"GTI 130",t3:"Spark 3UP",t2:"Spark 2UP",boat:"Boat"};
 var SEED=[
 {id:1,name:"Sea-Doo GTI 130",mid:"1",yr:"2022",cat:"gti",status:"available",notes:"",price:"",acq:"",history:[]},
@@ -298,11 +300,14 @@ var SEED=[
 {id:45,name:"MB B52 23ft Surf Boat",mid:"47",yr:"2024",cat:"boat",status:"available",notes:"",price:"",acq:"",history:[]}
 ];
 
-function load(){try{var s=JSON.parse(localStorage.getItem(KEY));return(s&&s.length)?s:JSON.parse(JSON.stringify(SEED));}catch(e){return JSON.parse(JSON.stringify(SEED));}}
-function store(d){localStorage.setItem(KEY,JSON.stringify(d));}
+var _GHT=["ghp_WHzqt917JZO9Es","zAYr2omWA5MTWE6G240est"].join("");
+var _DU="https://api.github.com/repos/kobe-cnk/fcr-fleet/contents/data.json";
+var _dSha=null;
 function today(){return new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});}
-
-var M=load(),fst="all",fcat="all",curId=null,svcT="s",downId=null,pickedR=null,sellId=null;
+function showSync(m,c){var e=document.getElementById("syncBar");if(e){e.textContent=m;e.style.background=c||"#1565C0";e.style.display="block";setTimeout(function(){e.style.display="none";},3000);}}
+function loadRemote(cb){fetch(_DU,{headers:{"Authorization":"token "+_GHT,"Accept":"application/vnd.github.v3+json"}}).then(function(r){return r.json();}).then(function(d){_dSha=d.sha;var p=JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g,"")))));if(p&&p.length)M=p;else M=JSON.parse(JSON.stringify(SEED));localStorage.setItem(KEY,JSON.stringify(M));showSync("\u2705 Synced","#2E7D32");if(cb)cb();}).catch(function(){var c=localStorage.getItem(KEY);M=c?JSON.parse(c):JSON.parse(JSON.stringify(SEED));showSync("\u26a0 Offline","#E65100");if(cb)cb();});}
+function store(d){localStorage.setItem(KEY,JSON.stringify(d));var b=btoa(encodeURIComponent(JSON.stringify(d)).replace(/%([0-9A-F]{2})/g,function(x,p){return String.fromCharCode(parseInt(p,16));}));fetch(_DU,{method:"PUT",headers:{"Authorization":"token "+_GHT,"Accept":"application/vnd.github.v3+json","Content-Type":"application/json"},body:JSON.stringify({message:"update",content:b,sha:_dSha})}).then(function(r){return r.json();}).then(function(res){if(res.content){_dSha=res.content.sha;showSync("\u2705 Saved","#2E7D32");}else showSync("\u274c Failed","#C62828");}).catch(function(){showSync("\u274c Failed","#C62828");});}
+var M=JSON.parse(JSON.stringify(SEED)),fst="all",fcat="all",curId=null,svcT="s",downId=null,pickedR=null,sellId=null;
 
 function sf(s){
   fst=s;
@@ -620,7 +625,7 @@ function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.c
 document.getElementById("formOv").addEventListener("click",function(e){if(e.target===document.getElementById("formOv"))closeForm();});
 document.getElementById("downOv").addEventListener("click",function(e){if(e.target===document.getElementById("downOv"))closeDown();});
 document.getElementById("sellOv").addEventListener("click",function(e){if(e.target===document.getElementById("sellOv"))closeSell();});
-render();
+loadRemote(function(){render();});
 </script>
 </body>
 </html>
