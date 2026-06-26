@@ -307,6 +307,28 @@ function today(){return new Date().toLocaleDateString("en-US",{month:"short",day
 function showSync(m,c){var e=document.getElementById("syncBar");if(e){e.textContent=m;e.style.background=c||"#1565C0";e.style.display="block";setTimeout(function(){e.style.display="none";},3000);}}
 function loadRemote(cb){fetch(_DU,{headers:{"Authorization":"token "+_GHT,"Accept":"application/vnd.github.v3+json"}}).then(function(r){return r.json();}).then(function(d){_dSha=d.sha;var p=JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g,"")))));if(p&&p.length)M=p;else M=JSON.parse(JSON.stringify(SEED));localStorage.setItem(KEY,JSON.stringify(M));showSync("\u2705 Synced","#2E7D32");if(cb)cb();}).catch(function(){var c=localStorage.getItem(KEY);M=c?JSON.parse(c):JSON.parse(JSON.stringify(SEED));showSync("\u26a0 Offline","#E65100");if(cb)cb();});}
 function store(d){localStorage.setItem(KEY,JSON.stringify(d));var b=btoa(encodeURIComponent(JSON.stringify(d)).replace(/%([0-9A-F]{2})/g,function(x,p){return String.fromCharCode(parseInt(p,16));}));fetch(_DU,{method:"PUT",headers:{"Authorization":"token "+_GHT,"Accept":"application/vnd.github.v3+json","Content-Type":"application/json"},body:JSON.stringify({message:"update",content:b,sha:_dSha})}).then(function(r){return r.json();}).then(function(res){if(res.content){_dSha=res.content.sha;showSync("\u2705 Saved","#2E7D32");}else showSync("\u274c Failed","#C62828");}).catch(function(){showSync("\u274c Failed","#C62828");});}
+function saveFleetAndClearInspectQueue(){
+  localStorage.setItem(KEY,JSON.stringify(M));
+  var b=btoa(encodeURIComponent(JSON.stringify(M)).replace(/%([0-9A-F]{2})/g,function(x,p){return String.fromCharCode(parseInt(p,16));}));
+  fetch(_DU,{method:"PUT",headers:{"Authorization":"token "+_GHT,"Accept":"application/vnd.github.v3+json","Content-Type":"application/json"},body:JSON.stringify({message:"FCR Inspect: damage flags",content:b,sha:_dSha})})
+  .then(function(r){return r.json();}).then(function(res){if(res.content){_dSha=res.content.sha;localStorage.removeItem("fcr_inspect_pending");showSync("\u2691 Damage flags applied","#C62828");render();}else showSync("\u274c Flag sync failed","#C62828");})
+  .catch(function(){showSync("\u274c Flag sync failed","#C62828");});
+}
+function applyInspectQueue(){
+  var q;try{q=JSON.parse(localStorage.getItem("fcr_inspect_pending")||"[]");}catch(e){q=[];}
+  if(!q||!q.length)return;
+  var changed=0;
+  q.forEach(function(item){
+    var uid=String(item.unitId||""),m=null;
+    for(var i=0;i<M.length;i++){if(String(M[i].id)===uid){m=M[i];break;}}
+    if(!m)return;
+    m.status="down";m.history=m.history||[];
+    var d=item.when?new Date(item.when).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}):today();
+    m.history.unshift({date:d,type:"d",note:item.note||"Damage flagged via FCR Inspect"});
+    changed++;
+  });
+  if(changed)saveFleetAndClearInspectQueue();
+}
 var M=JSON.parse(JSON.stringify(SEED)),fst="all",fcat="all",curId=null,svcT="s",downId=null,pickedR=null,sellId=null;
 
 function sf(s){
@@ -625,7 +647,7 @@ function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.c
 document.getElementById("formOv").addEventListener("click",function(e){if(e.target===document.getElementById("formOv"))closeForm();});
 document.getElementById("downOv").addEventListener("click",function(e){if(e.target===document.getElementById("downOv"))closeDown();});
 document.getElementById("sellOv").addEventListener("click",function(e){if(e.target===document.getElementById("sellOv"))closeSell();});
-loadRemote(function(){render();});
+loadRemote(function(){applyInspectQueue();render();});
 </script>
 </body>
 </html>
